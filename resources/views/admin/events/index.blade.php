@@ -73,17 +73,12 @@
                                                 <td>{{ $event->description }}</td>
                                                 <td>
                                                     <a class="btn btn-primary btn-sm mb-0" href="{{ route('admin.events.edit', $event->id) }}" title="Edit"><i class="fas fa-pen"></i></a>
-                                                    <form method="POST" action="{{ route('admin.events.destroy', $event->id) }}"
-                                                        style="display:inline" id="delete-user-form-{{ $event->id }}">
+                                                    <form action="{{ route('admin.events.destroy', $event->id) }}" method="POST" style="display: inline;">
                                                         @csrf
                                                         @method('DELETE')
-
-                                                        <button type="button" class="btn btn-danger btn-sm mb-0"
-                                                            title="Delete"
-                                                            onclick="confirmUserDelete({{ $event->id }})">
-                                                            <i class="fas fa-trash"></i>
-                                                        </button>
+                                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this category?')"><i class="fa fa-trash"></i></button>
                                                     </form>
+
                                                 </td>
                                             </tr>
                                         @endforeach

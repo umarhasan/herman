@@ -77,18 +77,13 @@
                                                         title="Edit"><i class="fas fa-pen"></i></a>
                                                     {{-- @endcan --}}
                                                     {{-- @can('users-delete') --}}
-                                                    <form method="POST"
-                                                        action="{{ route('admin.subjects.destroy', $subject->id) }}"
-                                                        style="display:inline" id="delete-user-form-{{ $subject->id }}">
+                                                    <form action="{{ route('admin.subjects.destroy', $subject->id) }}" method="POST" style="display: inline;">
                                                         @csrf
                                                         @method('DELETE')
-
-                                                        <button type="button" class="btn btn-danger btn-sm mb-0"
-                                                            title="Delete"
-                                                            onclick="confirmUserDelete({{ $subject->id }})">
-                                                            <i class="fas fa-trash"></i>
-                                                        </button>
+                                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this category?')"><i class="fa fa-trash"></i></button>
                                                     </form>
+
+
                                                     {{-- @endcan --}}
                                                 </td>
                                             </tr>
