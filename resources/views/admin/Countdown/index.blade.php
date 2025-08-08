@@ -31,21 +31,9 @@
                 <li class="count"><span id="seconds">--</span> SEC</li>
             </ul>
         </div>
-        {{-- ✅ PDF Download Button --}}
-    <div class="text-center mt-4">
 
-    </div>
-        <div id="countdown">
-            <ul>
-                <li class="count"><span id="days">--</span> DAYS</li>
-                <li class="count"><span id="hours">--</span> HRS</li>
-                <li class="count"><span id="minutes">--</span> MIN</li>
-                <li class="count"><span id="seconds">--</span> SEC</li>
-            </ul>
-        </div>
+        <div id="message" class="text-success font-weight-bold mt-3"></div>
 
-
-    </div>
 
 </div>
 
