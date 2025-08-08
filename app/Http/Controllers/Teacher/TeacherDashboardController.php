@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Teacher;
 use App\Models\TeacherClassSubject;
 use App\Models\ClassSubject;
-use App\Models\Timetable;
+use App\Models\TimeTable;
 use App\Models\Rating;
 
 class TeacherDashboardController extends Controller
@@ -43,7 +43,7 @@ class TeacherDashboardController extends Controller
             });
 
         // Timetable fetch (day wise group)
-        $timetable = Timetable::where('teacher_id', $teacher->id)
+        $timetable = TimeTable::where('teacher_id', $teacher->id)
             ->with(['subject', 'subject.schoolClass'])
             ->orderBy('day')
             ->orderBy('start_time')
