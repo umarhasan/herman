@@ -31,10 +31,7 @@
                 <li class="count"><span id="seconds">--</span> SEC</li>
             </ul>
         </div>
-
         <div id="message" class="text-success font-weight-bold mt-3"></div>
-
-
 </div>
 
 <script>
