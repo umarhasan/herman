@@ -63,10 +63,14 @@
   .search-bar button {
     border-radius: 0 50px 50px 0;
   }
+  .inner-pg-main .secTec {
+    padding: 46px 1px;
+    background-color: #cc9304;
+}
 </style>
 <div class="inner-pg-main">
-<section class="sec1">
-    <div class="sec1-main">
+<section class="secTec">
+    <div class="secTec-main">
         <h2 class="bann-head">Teacher</h2>
     </div>
 </section>
