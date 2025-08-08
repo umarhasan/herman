@@ -11,31 +11,33 @@
                 <i class="fas fa-tachometer-alt"></i> Dashboard
             </a>
 		    <a href="{{ route('teacher.hebcalendar.index') }}"><i class="fas fa-calendar-alt"></i> Hebrew Calendar</a>
-            <a href="#"><i class="fas fa-bullhorn"></i> Advertisement</a>
             <a href="{{ route('teacher.countdown') }}"><i class="fas fa-hourglass-half"></i> Countdown</a>
+            <div class="sidebar-items">
+                <h3 class="sidebar-h3">SYSTEM</h3>
+                <div class="sidebar-links1">
+                    <a href="#"><i class="fa-thin fa-circle-exclamation"></i> Help Center</a>
+                    <a class="{{ Route::is('teacher.profile.edit') ? 'active' : '' }}" href="{{ route('teacher.profile.edit') }}">
+                        <i class="fas fa-user-cog"></i> Profile
+                    </a>
+
+                    <a class="{{ Route::is('teacher.password.change') ? 'active' : '' }}" href="#">
+                        <i class="fas fa-key"></i> Change Password
+                    </a>
+                    <a>
+                        <form action="{{ route('logout') }}" method="post" class="logout-form">
+                            @csrf
+                            <button type="submit" class="logout-btn">
+                                <i class="fas fa-sign-out-alt"></i> Log Out
+                            </button>
+                        </form>
+                    </a>
+                    {{-- <a href="#"><i class="fa-light fa-left-from-bracket"></i> Logout</a> --}}
+                </div>
+            </div>
         </div>
     </div>
     {{-- System Help --}}
     <div class="sidebar-items">
-        <h3 class="sidebar-h3">SYSTEM</h3>
-        <div class="sidebar-links1">
-            <a href="#"><i class="fa-thin fa-circle-exclamation"></i> Help Center</a>
-            <a class="{{ Route::is('teacher.profile.edit') ? 'active' : '' }}" href="{{ route('teacher.profile.edit') }}">
-                <i class="fas fa-user-cog"></i> Profile
-            </a>
 
-            <a class="{{ Route::is('teacher.password.change') ? 'active' : '' }}" href="#">
-                <i class="fas fa-key"></i> Change Password
-            </a>
-            <a>
-                <form action="{{ route('logout') }}" method="post" class="logout-form">
-                    @csrf
-                    <button type="submit" class="logout-btn">
-                        <i class="fas fa-sign-out-alt"></i> Log Out
-                    </button>
-                </form>
-            </a>
-            {{-- <a href="#"><i class="fa-light fa-left-from-bracket"></i> Logout</a> --}}
-        </div>
     </div>
 </div>

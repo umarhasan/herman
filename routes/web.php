@@ -116,8 +116,8 @@ Route::middleware(['auth', 'role:Teacher'])->prefix('teacher')->group(function (
     Route::get('/profile', [TeacherDashboardController::class, 'edit'])->name('teacher.profile.edit');
     Route::post('/profile/update', [TeacherDashboardController::class, 'update'])->name('teacher.profile.update');
     //Route::post('hebcalendar', [TeacherHebrewCalendarController::class, 'index']);
+    Route::get('/countdown', [TeacherDashboardController::class, 'countdown'])->name('teacher.countdown');
     Route::get('/calendar/pdf', [TeacherHebrewCalendarController::class, 'downloadPdf'])->name('teacher.hebcalendar.pdf');
-    Route::get('/countdown', [TeacherHebrewCalendarController::class, 'countdown'])->name('teacher.countdown');
 
     Route::get('/converter', [TeacherHebrewCalendarController::class, 'converter'])->name('teacher.converter.page');
     Route::post('/convert-g2h', [TeacherHebrewCalendarController::class, 'gregorianToHebrew'])->name('teacher.converter.g2h');
