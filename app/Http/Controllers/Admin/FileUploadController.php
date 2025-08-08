@@ -30,15 +30,6 @@ class FileUploadController extends Controller
     public function store(Request $request)
     {
 
-        // $request->validate([
-        //     'title' => 'required|string|max:255',
-        //     'author' => 'nullable',
-        //     'testified' => 'nullable',
-        //     'description' => 'nullable|string',
-        //     'cover_image' => 'required|mimes:jpeg,png,jpg,gif,svg,pdf',
-        //     'category_amounts.*' => 'numeric|min:0',
-        //     'category_files.*' => 'required|mimes:pdf',
-        // ]);
 
         $file = new FileUpload();
         $file->name = $request->title;
@@ -165,7 +156,7 @@ class FileUploadController extends Controller
         // Delete FileUpload record
         $file->delete();
 
-        return redirect()->route('files.index')->with('success', 'File deleted successfully');
+        return redirect()->route('admin.files.index')->with('success', 'File deleted successfully');
     }
 
 
