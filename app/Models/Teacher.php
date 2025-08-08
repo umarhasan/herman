@@ -15,4 +15,9 @@ class Teacher extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function timetables()
+    {
+        return $this->hasMany(Timetable::class);
+    }
 }
