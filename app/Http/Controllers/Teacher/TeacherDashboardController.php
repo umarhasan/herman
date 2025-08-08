@@ -34,23 +34,31 @@ class TeacherDashboardController extends Controller
         $user = Auth::user();
         $teacher = $user->teacher;
 
-        // Teacher ke classes & subjects fetch
-        $classes = TeacherClassSubject::where('teacher_id', $teacher->id)
-            ->with(['classSubject.schoolClass', 'classSubject.subject'])
-            ->get()
-            ->groupBy(function ($item) {
-                return $item->classSubject->schoolClass->id; // Group by class ID
-            });
+        // Classes & subjects in required format
+        $teacherClassSubjects = TeacherClassSubject::where('teacher_id', $teacher->id)->get();
+        $classSubjects = [];
 
-        // Timetable fetch (day wise group)
+        foreach ($teacherClassSubjects as $tcs) {
+            $classSubject = ClassSubject::with('schoolClass', 'subject')->find($tcs->class_subject_id);
+            if ($classSubject) {
+                $classId = $classSubject->schoolClass->id;
+                $classSubjects[$classId]['class_name'] = $classSubject->schoolClass->name;
+                $classSubjects[$classId]['subjects'][] = [
+                    'id' => $classSubject->subject->id,
+                    'name' => $classSubject->subject->name,
+                ];
+            }
+        }
+
+        // Timetable day-wise group
         $timetable = TimeTable::where('teacher_id', $teacher->id)
             ->with(['subject', 'subject.schoolClass'])
             ->orderBy('day')
             ->orderBy('start_time')
             ->get()
-            ->groupBy('day'); // Array wise grouping
+            ->groupBy('day');
 
-        return view('teacher.profile', compact('teacher', 'user', 'classes', 'timetable'));
+        return view('teacher.profile', compact('teacher', 'user', 'classSubjects', 'timetable'));
     }
 
     public function update(Request $request)
@@ -65,7 +73,6 @@ class TeacherDashboardController extends Controller
             'available_days.*' => 'in:Mon,Tue,Wed,Thu,Fri,Sat,Sun',
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
 
-            // timetable fields
             'timetable' => 'nullable|array',
             'timetable.*.subject_id' => 'required_with:timetable.*.day',
             'timetable.*.day' => 'nullable|string|in:Mon,Tue,Wed,Thu,Fri,Sat,Sun',
@@ -75,18 +82,18 @@ class TeacherDashboardController extends Controller
 
         $user = Auth::user();
 
-        // Profile image update
+        // Profile image upload
         if ($request->hasFile('profile_image')) {
             $path = $request->file('profile_image')->store('profile_images', 'public');
             $user->profile_image = $path;
         }
 
-        // Update phone and DOB
+        // Update phone & DOB
         $user->phone = $request->phone;
         $user->date_of_birth = $request->date_of_birth;
         $user->save();
 
-        // Teacher table update/create
+        // Update teacher table
         $user->teacher()->updateOrCreate(
             ['user_id' => $user->id],
             [
@@ -97,13 +104,13 @@ class TeacherDashboardController extends Controller
             ]
         );
 
-        // Timetable save/update (auth teacher_id)
+        // Save/update timetable
         if ($request->timetable) {
             $teacherId = $user->teacher->id;
 
             foreach ($request->timetable as $entry) {
                 if (!empty($entry['day']) && !empty($entry['subject_id'])) {
-                    Timetable::updateOrCreate(
+                    TimeTable::updateOrCreate(
                         [
                             'teacher_id' => $teacherId,
                             'subject_id' => $entry['subject_id'],

@@ -100,12 +100,12 @@
         {{-- Assigned Classes & Subjects (read-only) --}}
         <div class="mb-4">
             <h5>📚 Assigned Classes & Subjects</h5>
-            @forelse($classes as $classId => $classGroup)
+            @forelse($classSubjects as $classId => $classData)
                 <div class="mb-2">
-                    <strong>{{ $classGroup->first()->classSubject->schoolClass->name ?? 'Class' }}</strong>
+                    <strong>{{ $classData['class_name'] ?? 'Class' }}</strong>
                     <ul class="mb-0">
-                        @foreach($classGroup as $cs)
-                            <li>{{ $cs->classSubject->subject->name ?? 'Subject' }}</li>
+                        @foreach($classData['subjects'] as $subject)
+                            <li>{{ $subject['name'] ?? 'Subject' }}</li>
                         @endforeach
                     </ul>
                 </div>
@@ -137,12 +137,11 @@
 
                                 <div class="col-md-3 mb-2">
                                     <select name="timetable[][subject_id]" class="form-control">
-                                        {{-- We'll populate options server-side, using classes --}}
-                                        @foreach($classes as $group)
-                                            @foreach($group as $cs)
-                                                <option value="{{ $cs->classSubject->id }}"
-                                                    {{ $entry->subject_id == $cs->classSubject->id ? 'selected' : '' }}>
-                                                    {{ $cs->classSubject->schoolClass->name ?? '' }} — {{ $cs->classSubject->subject->name ?? '' }}
+                                        @foreach($classSubjects as $classData)
+                                            @foreach($classData['subjects'] as $subject)
+                                                <option value="{{ $subject['id'] }}"
+                                                    {{ $entry->subject_id == $subject['id'] ? 'selected' : '' }}>
+                                                    {{ $classData['class_name'] ?? '' }} — {{ $subject['name'] ?? '' }}
                                                 </option>
                                             @endforeach
                                         @endforeach
@@ -166,16 +165,15 @@
                 @endif
             </div>
 
-            {{-- Hidden template for JS cloning --}}
+            {{-- Hidden template data for JS --}}
             @php
-                // Flatten subjects list for JS (id, name, class_name)
                 $subjectList = [];
-                foreach($classes as $group){
-                    foreach($group as $cs){
+                foreach($classSubjects as $classData){
+                    foreach($classData['subjects'] as $subject){
                         $subjectList[] = [
-                            'id' => $cs->classSubject->id,
-                            'name' => $cs->classSubject->subject->name ?? '',
-                            'class_name' => $cs->classSubject->schoolClass->name ?? ''
+                            'id' => $subject['id'],
+                            'name' => $subject['name'] ?? '',
+                            'class_name' => $classData['class_name'] ?? ''
                         ];
                     }
                 }
@@ -187,19 +185,17 @@
 </div>
 
 {{-- JS: add/remove timetable rows --}}
-
 <script>
     (function(){
-        // PHP-generated JS data
         const days = @json($days);
-        const subjects = @json($subjectList); // [{id, name, class_name}, ...]
+        const subjects = @json($subjectList);
 
         function buildDayOptions(selected = '') {
             return days.map(d => `<option value="${d}" ${d === selected ? 'selected' : ''}>${d}</option>`).join('');
         }
 
         function buildSubjectOptions(selectedId = '') {
-            if (!subjects || !subjects.length) {
+            if (!subjects.length) {
                 return '<option value="">No subjects available</option>';
             }
             return subjects.map(s => {
@@ -231,30 +227,21 @@
             return row;
         }
 
-        // Add new empty row on button click
         document.getElementById('add-row').addEventListener('click', function(){
+            if (!subjects.length) {
+                alert('No subjects available to add. Please contact admin or assign classes/subjects first.');
+                return;
+            }
             const wrapper = document.getElementById('timetable-wrapper');
             wrapper.appendChild(makeRow());
-            // scroll into view last added row
             wrapper.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'end' });
         });
 
-        // Delegate remove button
         document.getElementById('timetable-wrapper').addEventListener('click', function(e){
             if (e.target && e.target.matches('button.remove-row')) {
-                const row = e.target.closest('.timetable-row');
-                if (row) row.remove();
-            }
-        });
-
-        // If no subjects available and user tries to add, show a toast/alert
-        document.getElementById('add-row').addEventListener('click', function(){
-            if (!subjects || !subjects.length) {
-                alert('No subjects available to add. Please contact admin or assign classes/subjects first.');
+                e.target.closest('.timetable-row').remove();
             }
         });
     })();
 </script>
-
-
 @endsection
