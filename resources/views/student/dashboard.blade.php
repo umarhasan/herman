@@ -20,7 +20,9 @@
     <div class="countdown1">
         <h3 class="counta">Countdown to 13th Birthday</h3>
         <p class="countb">This countdown shows the time left until you turn 13 years old.</p>
-
+        <a href="{{ route('student.hebcalendar.pdf') }}" class="btn btn-primary">
+            📄 Download 13th Year Calendar PDF
+        </a>
         <div id="countdown">
             <ul>
                 <li class="count"><span id="days">--</span> DAYS</li>
@@ -32,10 +34,7 @@
 
         <div id="message" class="text-success font-weight-bold mt-3"></div>
 
-        <form class="countdown-form mt-4">
-            <input type="email" name="email" class="count-input" placeholder="Enter your Email Address" required />
-            <input type="submit" value="Submit" class="count-submit" />
-        </form>
+
     </div>
 </div>
 

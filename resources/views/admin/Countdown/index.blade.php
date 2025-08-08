@@ -20,7 +20,17 @@
     <div class="countdown1">
         <h3 class="counta">Countdown to 13th Birthday</h3>
         <p class="countb">This countdown shows the time left until you turn 13 years old.</p>
-
+        <a href="{{ route('admin.hebcalendar.pdf') }}" class="btn btn-primary">
+            📄 Download 13th Year Calendar PDF
+        </a>
+        <div id="countdown">
+            <ul>
+                <li class="count"><span id="days">--</span> DAYS</li>
+                <li class="count"><span id="hours">--</span> HRS</li>
+                <li class="count"><span id="minutes">--</span> MIN</li>
+                <li class="count"><span id="seconds">--</span> SEC</li>
+            </ul>
+        </div>
         {{-- ✅ PDF Download Button --}}
     <div class="text-center mt-4">
 

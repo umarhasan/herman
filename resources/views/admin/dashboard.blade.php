@@ -34,10 +34,7 @@
 
         <div id="message" class="text-success font-weight-bold mt-3"></div>
 
-        <form class="countdown-form mt-4">
-            <input type="email" name="email" class="count-input" placeholder="Enter your Email Address" required />
-            <input type="submit" value="Submit" class="count-submit" />
-        </form>
+
     </div>
 </div>
 
