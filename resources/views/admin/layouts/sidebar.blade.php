@@ -49,14 +49,11 @@
             <a href="{{ route('admin.permissions.index') }}" class="{{ Route::is('admin.permissions.*') ? 'active' : '' }}">
                 <i class="fas fa-users"></i> Permissions
             </a>
-            <a href="{{ route('admin.files.index') }}"><i class="fas fa-address-book"></i> Book</a>
             <a href="#"><i class="fas fa-calendar-alt"></i> Mezuza</a>
             <a href="#"><i class="fas fa-calendar-alt"></i> Subscription</a>
             <a href="#"><i class="fas fa-calendar-alt"></i> Tefilin Inspection</a>
-            <a href="#"><i class="fas fa-upload"></i> Book Upload</a>
-            <a href="#"><i class="fas fa-vials"></i> Test</a>
+            <a href="{{ route('admin.files.index') }}"><i class="fas fa-upload"></i> Book Upload</a>
             <a href="{{ route('admin.hebcalendar.index') }}"><i class="fas fa-calendar-alt"></i> Hebrew Calendar</a>
-            <a href="#"><i class="fas fa-bullhorn"></i> Advertisement</a>
             <a href="{{ route('admin.countdown') }}"><i class="fas fa-hourglass-half"></i> Countdown</a>
         </div>
     </div>
