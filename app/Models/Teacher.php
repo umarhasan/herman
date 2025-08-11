@@ -18,6 +18,6 @@ class Teacher extends Model
 
     public function timetables()
     {
-        return $this->hasMany(Timetable::class);
+        return $this->hasMany(Timetable::class,'teacher_id','user_id');
     }
 }

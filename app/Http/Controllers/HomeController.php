@@ -47,7 +47,7 @@ class HomeController extends Controller
 
     public function Teachers()
     {
-        $teachers = Teacher::with('user')->where('status', 1)->get();
+        $teachers = Teacher::with('user','timetables')->where('status', 1)->get();
         return view('teachers', compact('teachers'));
     }
 }

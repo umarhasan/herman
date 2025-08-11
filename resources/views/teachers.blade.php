@@ -7,20 +7,11 @@
   body {
     background-color: #f8f9fa;
   }
-  .hero-title {
-    font-size: 2.8rem;
-    font-weight: 700;
-    color: #1a1a1a;
-  }
-  .hero-title span {
-    color: #0d6efd;
-  }
   .teacher-card {
     border-radius: 1rem;
     background: #fff;
     box-shadow: 0 6px 20px rgba(0,0,0,0.06);
     transition: all 0.3s ease;
-    position: relative;
   }
   .teacher-card:hover {
     transform: translateY(-6px);
@@ -32,13 +23,6 @@
     object-fit: cover;
     border-radius: 50%;
     border: 3px solid #0d6efd;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  }
-  .btn-group-top {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    flex-wrap: wrap;
   }
   .availability-badge {
     background: #e9f5ff;
@@ -56,28 +40,9 @@
     font-size: 0.8rem;
     font-weight: 600;
   }
-  .search-bar input {
-    border-radius: 50px 0 0 50px;
-    border: 1px solid #ddd;
-  }
-  .search-bar button {
-    border-radius: 0 50px 50px 0;
-  }
-  .inner-pg-main .secTec {
-    padding: 46px 1px;
-    background-color: #cc9304;
-}
 </style>
-<div class="inner-pg-main">
-<section class="secTec">
-    <div class="secTec-main">
-        <h2 class="bann-head">Teacher</h2>
-    </div>
-</section>
+
 <div class="container py-5">
-
-
-  {{-- 👨‍🏫 Teachers Listing --}}
   @if($teachers->isEmpty())
     <div class="alert alert-info text-center shadow-sm">
       No teachers available at the moment.
@@ -90,8 +55,8 @@
             <div class="d-flex align-items-center mb-3">
               <img src="{{ $teacher->user->profile_image ? asset('storage/' . $teacher->user->profile_image) : asset('assets/images/profile-icon.jpg') }}" alt="{{ $teacher->user->name }}" class="teacher-image me-3">
               <div>
-                <h5 class="mb-0 fw-bold">{{ $teacher->user->name }}</h5>
-                <small class="text-muted">United States</small>
+                <h5 class="mb-1 fw-bold">{{ $teacher->user->name }}</h5>
+                <span class="badge bg-primary">{{ $teacher->topic ?? 'No topic specified' }}</span>
               </div>
             </div>
             <p class="text-muted small mb-2">{{ Str::limit($teacher->bio ?? 'No description provided.', 100) }}</p>
@@ -105,23 +70,59 @@
               </span>
             </div>
 
-            <div class="d-flex flex-wrap gap-2">
-              @if($teacher->video_url)
-                <a href="{{ $teacher->video_url }}" target="_blank" class="btn btn-outline-secondary btn-sm shadow-sm">🎥 Watch Intro</a>
-              @endif
-              <a href="#" class="btn btn-success btn-sm shadow-sm">📅 Book / Chat</a>
+            <a class="btn btn-danger btn-sm shadow-sm" data-bs-toggle="modal" data-bs-target="#teacherModal{{ $teacher->id }}">
+              📄 View Details
+            </a>
+            <a href="#" class="btn btn-success">📅 Book / Chat</a>
+        </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="teacherModal{{ $teacher->id }}" tabindex="-1" aria-labelledby="teacherModalLabel{{ $teacher->id }}" aria-hidden="true">
+          <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="teacherModalLabel{{ $teacher->id }}">{{ $teacher->user->name }} - {{ $teacher->topic }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <p><strong>Bio:</strong> {{ $teacher->bio ?? 'No bio available.' }}</p>
+                <p><strong>Hourly Rate:</strong> ${{ $teacher->hourly_rate ?? 'N/A' }}</p>
+                <p><strong>Available Days:</strong> {{ is_array($teacher->available_days) ? implode(', ', $teacher->available_days) : 'Not set' }}</p>
+
+                <h6 class="mt-4">📅 Time Table</h6>
+                @if(isset($teacher->timetables) && $teacher->timetables->count() > 0)
+                  <table class="table table-bordered table-sm">
+                    <thead>
+                      <tr>
+                        <th>Day</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @foreach($teacher->timetables as $time)
+                        <tr>
+                          <td>{{ $time->day }}</td>
+                          <td>{{ $time->start_time }}</td>
+                          <td>{{ $time->end_time }}</td>
+                        </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                @else
+                  <p class="text-muted">No timetable available.</p>
+                @endif
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+               </div>
             </div>
           </div>
         </div>
+
       @endforeach
     </div>
   @endif
-
-  {{-- 💬 Reviews Section --}}
-  <div class="text-center mt-5">
-    <h4 class="fw-bold">💬 Read what students think!</h4>
-    <p class="text-muted">Reviews and ratings coming soon.</p>
-  </div>
-</div>
 </div>
 @endsection
