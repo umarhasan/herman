@@ -19,7 +19,7 @@ class TeacherDashboardController extends Controller
         $user = Auth::user();
         $dob = $user->date_of_birth;
 
-        return view('admin.dashboard', compact('user', 'dob'));
+        return view('teacher.dashboard', compact('user', 'dob'));
     }
 
     public function Countdown()
@@ -27,7 +27,7 @@ class TeacherDashboardController extends Controller
         $user = Auth::user();
         $dob = $user->date_of_birth;
 
-        return view('admin.Countdown.index', compact('user', 'dob'));
+        return view('teacher.Countdown.index', compact('user', 'dob'));
     }
     public function edit()
     {

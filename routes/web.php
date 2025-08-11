@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\SchoolClassController;
 use App\Http\Controllers\Admin\AdminSubjectController;
 
 use App\Http\Controllers\Admin\AdminTimeTableController;
+use App\Http\Controllers\Teacher\TeacherTimeTableController as TeacherTimeTableController;
 use App\Http\Controllers\Admin\AdminAttendenceController;
 use App\Http\Controllers\Admin\AdminResourceController;
 use App\Http\Controllers\Admin\AdminTestController;
@@ -123,6 +124,10 @@ Route::middleware(['auth', 'role:Teacher'])->prefix('teacher')->group(function (
     Route::post('/convert-g2h', [TeacherHebrewCalendarController::class, 'gregorianToHebrew'])->name('teacher.converter.g2h');
     Route::post('/convert-h2g', [TeacherHebrewCalendarController::class, 'hebrewToGregorian'])->name('teacher.converter.h2g');
     Route::get('converter/month-list', [TeacherHebrewCalendarController::class, 'calendarListView'])->name('teacher.converter.monthlist');
+
+    Route::resource('timetables', TeacherTimeTableController::class)->names('teacher.timetables');
+    Route::get('/teacher/get-subjects-by-class/{classId}', [TeacherTimeTableController::class, 'getSubjectsByClass'])->name('teacher.getSubjectsByClass');
+    Route::delete('timetables/bulk-delete', [TeacherTimeTableController::class, 'destroy'])->name('teacher.timetables.bulkDelete');
 });
 
 // Student

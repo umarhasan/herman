@@ -12,6 +12,9 @@
             </a>
 		    <a href="{{ route('teacher.hebcalendar.index') }}"><i class="fas fa-calendar-alt"></i> Hebrew Calendar</a>
             <a href="{{ route('teacher.countdown') }}"><i class="fas fa-hourglass-half"></i> Countdown</a>
+            <a href="{{ route('teacher.timetables.index') }}" class="{{ Route::is('teacher.timetables.*') ? 'active' : '' }}">
+                <i class="fas fa-calendar-alt"></i> Timetable
+            </a>
             <div class="sidebar-items">
                 <h3 class="sidebar-h3">SYSTEM</h3>
                 <div class="sidebar-links1">

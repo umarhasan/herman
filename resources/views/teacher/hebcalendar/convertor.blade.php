@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('teacher.layouts.app')
 @section('title', 'Hebrew ↔ Gregorian Converter')
 
 @section('content')
