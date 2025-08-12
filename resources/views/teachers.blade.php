@@ -66,12 +66,11 @@
                    class="teacher-image me-3">
               <div>
                 <h5 class="mb-1 fw-bold">{{ $teacher->user->name }}</h5>
-                <span class="topic-badge">
-                  🎯 Topic: {{ $teacher->topic ?? 'No topic specified' }}
-                </span>
               </div>
             </div>
-
+            <h4>
+                {{ $teacher->topic ?? 'No topic specified' }}
+            </h4>
             <p class="text-muted small mb-2">
               {{ Str::limit($teacher->bio ?? 'No description provided.', 100) }}
             </p>
@@ -121,9 +120,9 @@
                        alt="{{ $teacher->user->name }}"
                        class="rounded-circle" width="120" height="120">
                   <h4 class="fw-bold mt-3">{{ $teacher->user->name }}</h4>
-                  <span class="topic-badge">
-                    🎯 Topic: {{ $teacher->topic ?? 'No topic specified' }}
-                  </span>
+                  <h2>
+                   Topic: {{ $teacher->topic ?? 'No topic specified' }}
+                  </h2>
                 </div>
 
                 <p><strong>Bio:</strong> {{ $teacher->bio ?? 'No bio available.' }}</p>
