@@ -10,6 +10,9 @@
             <a href="{{ route('teacher.dashboard') }}" class="{{ Route::is('teacher.dashboard') ? 'active' : '' }}">
                 <i class="fas fa-tachometer-alt"></i> Dashboard
             </a>
+            <a href="{{ route('teacher.bookings.index') }}" class="{{ Route::is('teacher.bookings.index') ? 'active' : '' }}">
+                <i class="fas fa-tachometer-alt"></i> Bookings
+            </a>
 		    <a href="{{ route('teacher.hebcalendar.index') }}"><i class="fas fa-calendar-alt"></i> Hebrew Calendar</a>
             <a href="{{ route('teacher.countdown') }}"><i class="fas fa-hourglass-half"></i> Countdown</a>
             <a href="{{ route('teacher.timetables.index') }}" class="{{ Route::is('teacher.timetables.*') ? 'active' : '' }}">

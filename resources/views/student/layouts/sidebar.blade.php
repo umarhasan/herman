@@ -11,7 +11,7 @@
                 <i class="fas fa-tachometer-alt"></i> Dashboard
             </a>
             <a href="{{ route('student.hebcalendar.index') }}"><i class="fas fa-calendar-alt"></i> Hebrew Calendar</a>
-            <a href="#"><i class="fas fa-bullhorn"></i> Advertisement</a>
+            <a href="{{ route('student.bookings')}}"><i class="fas fa-bullhorn"></i> Bookings</a>
             <a href="{{ route('student.countdown') }}"><i class="fas fa-hourglass-half"></i> Countdown</a>
         </div>
     </div>

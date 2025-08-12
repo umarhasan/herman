@@ -10,6 +10,9 @@
             <a href="{{ route('admin.dashboard') }}" class="{{ Route::is('admin.dashboard') ? 'active' : '' }}">
                 <i class="fas fa-tachometer-alt"></i> Dashboard
             </a>
+            <a href="{{ route('admin.bookings.index') }}" class="{{ Route::is('admin.categories.*') ? 'active' : '' }}">
+                <i class="fas fa-tachometer-alt"></i> Bookings
+            </a>
             <a href="{{ route('admin.categories.index') }}" class="{{ Route::is('admin.categories.*') ? 'active' : '' }}">
                 <i class="fas fa-tachometer-alt"></i> categories
             </a>

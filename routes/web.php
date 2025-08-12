@@ -32,6 +32,11 @@ use App\Http\Controllers\Parent\ParentDashboardController;
 use App\Http\Controllers\Parent\HebrewCalendarController as ParentHebrewCalendarController;
 use App\Http\Controllers\User\UserDashboardController;
 use App\Http\Controllers\User\HebrewCalendarController as UserHebrewCalendarController;
+
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\Teacher\TeacherBookingController;
+use App\Http\Controllers\Admin\AdminBookingController;
+
 // Frontend Routes
 Route::get('/', [HomeController::class, 'Home'])->name(name: 'home');
 Route::get('/about', [HomeController::class, 'About'])->name('about');
@@ -107,6 +112,11 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     Route::post('/convert-g2h', [AdminHebrewCalendarController::class, 'gregorianToHebrew'])->name('admin.converter.g2h');
     Route::post('/convert-h2g', [AdminHebrewCalendarController::class, 'hebrewToGregorian'])->name('admin.converter.h2g');
     Route::get('converter/month-list', [AdminHebrewCalendarController::class, 'calendarListView'])->name('admin.converter.monthlist');
+
+    Route::get('/bookings', [AdminBookingController::class,'index'])->name('admin.bookings.index');
+    Route::post('/bookings/{booking}/approve', [AdminBookingController::class,'approve'])->name('admin.bookings.approve');
+    Route::post('/bookings/{booking}/reject', [AdminBookingController::class,'reject'])->name('admin.bookings.reject');
+
 });
 
 // Teacher
@@ -128,7 +138,15 @@ Route::middleware(['auth', 'role:Teacher'])->prefix('teacher')->group(function (
     Route::resource('timetables', TeacherTimeTableController::class)->names('teacher.timetables');
     Route::get('/teacher/get-subjects-by-class/{classId}', [TeacherTimeTableController::class, 'getSubjectsByClass'])->name('teacher.getSubjectsByClass');
     Route::delete('timetables/bulk-delete', [TeacherTimeTableController::class, 'destroy'])->name('teacher.timetables.bulkDelete');
-});
+
+    Route::get('/bookings', [TeacherBookingController::class,'index'])->name('teacher.bookings.index');
+    Route::post('/bookings/{booking}/send-link', [TeacherBookingController::class,'sendPaymentLink'])->name('teacher.bookings.sendLink');
+    Route::get('/bookings/{booking}/meeting/create', [TeacherBookingController::class,'createMeetingForm'])->name('teacher.bookings.createMeeting');
+    Route::post('/bookings/{booking}/meeting/store', [TeacherBookingController::class,'storeMeeting'])->name('teacher.bookings.storeMeeting');
+    Route::post('/bookings/{booking}/upload-recording', [TeacherBookingController::class,'uploadRecording'])->name('teacher.bookings.uploadRecording');
+    Route::post('/recordings/{recording}/remove', [TeacherBookingController::class,'removeRecording'])->name('teacher.recordings.remove');
+
+    });
 
 // Student
 Route::middleware(['auth', 'role:Student'])->prefix('student')->group(function () {
@@ -142,6 +160,12 @@ Route::middleware(['auth', 'role:Student'])->prefix('student')->group(function (
     Route::post('/convert-g2h', [StudentHebrewCalendarController::class, 'gregorianToHebrew'])->name('student.converter.g2h');
     Route::post('/convert-h2g', [StudentHebrewCalendarController::class, 'hebrewToGregorian'])->name('student.converter.h2g');
     Route::get('converter/month-list', [StudentHebrewCalendarController::class, 'calendarListView'])->name('student.converter.monthlist');
+
+    Route::post('/bookings/start/{teacherId}', [BookingController::class,'start'])->name('bookings.start');
+    Route::get('/bookings', [BookingController::class,'studentBookings'])->name('student.bookings');
+    Route::get('/bookings/{booking}', [BookingController::class,'show'])->name('student.bookings.show');
+    Route::post('/bookings/{booking}/upload-proof', [BookingController::class,'uploadProof'])->name('student.bookings.uploadProof');
+
 });
 
 // Parent

@@ -71,9 +71,13 @@
             </div>
 
             <a class="btn btn-danger btn-sm shadow-sm" data-bs-toggle="modal" data-bs-target="#teacherModal{{ $teacher->id }}">
-              📄 View Details
+              📄Details
             </a>
-            <a href="#" class="btn btn-success">📅 Book / Chat</a>
+            <a href="#" class="btn  btn-sm btn-success">📅Chat</a>
+            <form action="{{ route('bookings.start', $teacher->user->id) }}" method="POST" class="d-inline">
+                @csrf
+                <button type="submit" class="btn btn-sm btn-warning">Start Course</button>
+              </form>
         </div>
         </div>
 
