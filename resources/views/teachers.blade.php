@@ -24,6 +24,14 @@
     border-radius: 50%;
     border: 3px solid #0d6efd;
   }
+  .topic-badge {
+    background: #d1ecf1;
+    color: #0c5460;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
   .availability-badge {
     background: #e9f5ff;
     color: #0d6efd;
@@ -53,51 +61,79 @@
         <div class="col-md-6 col-lg-4">
           <div class="teacher-card p-4 h-100">
             <div class="d-flex align-items-center mb-3">
-              <img src="{{ $teacher->user->profile_image ? asset('storage/' . $teacher->user->profile_image) : asset('assets/images/profile-icon.jpg') }}" alt="{{ $teacher->user->name }}" class="teacher-image me-3">
+              <img src="{{ $teacher->user->profile_image ? asset('storage/' . $teacher->user->profile_image) : asset('assets/images/profile-icon.jpg') }}"
+                   alt="{{ $teacher->user->name }}"
+                   class="teacher-image me-3">
               <div>
                 <h5 class="mb-1 fw-bold">{{ $teacher->user->name }}</h5>
-                <span class="badge bg-primary">{{ $teacher->topic ?? 'No topic specified' }}</span>
+                <span class="topic-badge">
+                  🎯 Topic: {{ $teacher->topic ?? 'No topic specified' }}
+                </span>
               </div>
             </div>
-            <p class="text-muted small mb-2">{{ Str::limit($teacher->bio ?? 'No description provided.', 100) }}</p>
+
+            <p class="text-muted small mb-2">
+              {{ Str::limit($teacher->bio ?? 'No description provided.', 100) }}
+            </p>
 
             <div class="d-flex flex-wrap gap-2 mb-3">
-              <span class="availability-badge">
+              {{-- <span class="availability-badge">
                 Availability: {{ is_array($teacher->available_days) ? implode(', ', $teacher->available_days) : 'Not set' }}
-              </span>
+              </span> --}}
               <span class="rate-badge">
-                ${{ $teacher->hourly_rate ?? 'N/A' }}/hr
+                💲{{ $teacher->hourly_rate ?? 'N/A' }}/hr
               </span>
             </div>
+            <div class="d-flex gap-2">
+                <a class="btn btn-outline-primary btn-sm"
+                   style="display:flex; align-items:center; height:32px"
+                   data-bs-toggle="modal"
+                   data-bs-target="#teacherProfile{{ $teacher->id }}">
+                    👤 Profile
+                </a>
 
-            <a class="btn btn-danger btn-sm shadow-sm" data-bs-toggle="modal" data-bs-target="#teacherModal{{ $teacher->id }}">
-              📄Details
-            </a>
-            <a href="#" class="btn  btn-sm btn-success">📅Chat</a>
-            <form action="{{ route('bookings.start', $teacher->user->id) }}" method="POST" class="d-inline">
-                @csrf
-                <button type="submit" class="btn btn-sm btn-warning">Start Course</button>
-              </form>
-        </div>
+                <a href="#" class="btn btn-outline-success btn-sm"
+                   style="display:flex; align-items:center; height:32px">
+                    💬 Chat
+                </a>
+
+                <form action="{{ route('bookings.start', $teacher->user->id) }}"
+                      method="POST"
+                      class="d-inline"
+                      style="margin:0">
+                    @csrf
+                    <button type="submit" class="btn btn-outline-warning btn-sm"
+                        style="display:flex; align-items:center; gap:5px; height:32px">
+                    <i class="fas fa-play"></i> Start Course
+                </button>
+                </form>
+            </div>
+          </div>
         </div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="teacherModal{{ $teacher->id }}" tabindex="-1" aria-labelledby="teacherModalLabel{{ $teacher->id }}" aria-hidden="true">
+        <!-- Profile Modal -->
+        <div class="modal fade" id="teacherProfile{{ $teacher->id }}" tabindex="-1" aria-labelledby="teacherProfileLabel{{ $teacher->id }}" aria-hidden="true">
           <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="teacherModalLabel{{ $teacher->id }}">{{ $teacher->user->name }} - {{ $teacher->topic }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
+              <div class="modal-body p-4">
+                <div class="text-center mb-4">
+                  <img src="{{ $teacher->user->profile_image ? asset('storage/' . $teacher->user->profile_image) : asset('assets/images/profile-icon.jpg') }}"
+                       alt="{{ $teacher->user->name }}"
+                       class="rounded-circle" width="120" height="120">
+                  <h4 class="fw-bold mt-3">{{ $teacher->user->name }}</h4>
+                  <span class="topic-badge">
+                    🎯 Topic: {{ $teacher->topic ?? 'No topic specified' }}
+                  </span>
+                </div>
+
                 <p><strong>Bio:</strong> {{ $teacher->bio ?? 'No bio available.' }}</p>
-                <p><strong>Hourly Rate:</strong> ${{ $teacher->hourly_rate ?? 'N/A' }}</p>
+                <p><strong>Hourly Rate:</strong> 💲{{ $teacher->hourly_rate ?? 'N/A' }}</p>
                 <p><strong>Available Days:</strong> {{ is_array($teacher->available_days) ? implode(', ', $teacher->available_days) : 'Not set' }}</p>
 
                 <h6 class="mt-4">📅 Time Table</h6>
                 @if(isset($teacher->timetables) && $teacher->timetables->count() > 0)
                   <table class="table table-bordered table-sm">
-                    <thead>
+                    <thead class="table-light">
                       <tr>
                         <th>Day</th>
                         <th>Start Time</th>
@@ -119,8 +155,8 @@
                 @endif
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-               </div>
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+              </div>
             </div>
           </div>
         </div>
