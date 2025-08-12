@@ -120,9 +120,9 @@
                        alt="{{ $teacher->user->name }}"
                        class="rounded-circle" width="120" height="120">
                   <h4 class="fw-bold mt-3">{{ $teacher->user->name }}</h4>
-                  <h2>
-                   Topic: {{ $teacher->topic ?? 'No topic specified' }}
-                  </h2>
+                  <h6>
+                   {{ $teacher->topic ?? 'No topic specified' }}
+                  </h6>
                 </div>
 
                 <p><strong>Bio:</strong> {{ $teacher->bio ?? 'No bio available.' }}</p>
