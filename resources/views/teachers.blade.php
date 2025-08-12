@@ -68,9 +68,9 @@
                 <h5 class="mb-1 fw-bold">{{ $teacher->user->name }}</h5>
               </div>
             </div>
-            <h4>
+            <h6>
                 {{ $teacher->topic ?? 'No topic specified' }}
-            </h4>
+            </h6>
             <p class="text-muted small mb-2">
               {{ Str::limit($teacher->bio ?? 'No description provided.', 100) }}
             </p>
