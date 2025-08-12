@@ -44,11 +44,12 @@ class RegisteredUserController extends Controller
         ]);
 
          // Assign default role
-         $user->assignRole('user');
+         $user->assignRole('student');
 
         event(new Registered($user));
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect('/')
+        ->with('success', 'Operation completed successfully!');
     }
 }
