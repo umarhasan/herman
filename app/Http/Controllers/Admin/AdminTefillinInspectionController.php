@@ -26,6 +26,7 @@ class AdminTefillinInspectionController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $data = $request->validate([
             'user_id'=>'required|exists:users,id',
             'side'=>'required|in:head,hand',

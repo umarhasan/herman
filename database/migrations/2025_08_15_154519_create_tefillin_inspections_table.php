@@ -14,13 +14,14 @@ return new class extends Migration
         Schema::create('tefillin_inspections', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->enum('side',['head','hand']); // head = 4 parts, hand = full box
-            $table->enum('part_name',['A','B','C','D'])->nullable(); // null for hand
-            $table->date('date_of_buy')->nullable();
+            $table->string('side');
+            $table->string('part_name')->nullable();
+            $table->date('date_of_buy');
             $table->date('next_inspection_date')->nullable();
-            $table->enum('status',['active','removed'])->default('active');
             $table->string('image')->nullable();
+            $table->enum('status', ['active','removed'])->default('active');
             $table->timestamps();
+
         });
     }
 

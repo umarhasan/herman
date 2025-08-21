@@ -8,9 +8,8 @@ use Carbon\Carbon;
 
 class TefillinInspection extends Model
 {
-    protected $fillable = [
-        'user_id','side','part_name','date_of_buy','next_inspection_date','status','image'
-    ];
+
+    protected $guarded = [];
 
     protected $casts = [
         'date_of_buy' => 'date',
