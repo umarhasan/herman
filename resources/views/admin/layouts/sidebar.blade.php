@@ -54,7 +54,7 @@
             </a>
             <a href="#"><i class="fas fa-calendar-alt"></i> Mezuza</a>
             <a href="#"><i class="fas fa-calendar-alt"></i> Subscription</a>
-            <a href="#"><i class="fas fa-calendar-alt"></i> Tefilin Inspection</a>
+            <a href="{{ route('admin.tefillin_inspections.index')}}"><i class="fas fa-calendar-alt"></i> Tefilin Inspection</a>
             <a href="{{ route('admin.files.index') }}"><i class="fas fa-upload"></i> Book Upload</a>
             <a href="{{ route('admin.hebcalendar.index') }}"><i class="fas fa-calendar-alt"></i> Hebrew Calendar</a>
             <a href="{{ route('admin.countdown') }}"><i class="fas fa-hourglass-half"></i> Countdown</a>

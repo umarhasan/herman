@@ -13,6 +13,7 @@
             <a href="{{ route('parent.hebcalendar.index') }}"><i class="fas fa-calendar-alt"></i> Hebrew Calendar</a>
             <a href="#"><i class="fas fa-bullhorn"></i> Advertisement</a>
             <a href="{{ route('parent.countdown') }}"><i class="fas fa-hourglass-half"></i> Countdown</a>
+            <a href="{{ route('parent.tefillin_inspections.index') }}"><i class="fas fa-hourglass-half"></i> Tefillin inspections</a>
         </div>
     </div>
 

@@ -18,6 +18,8 @@
             <a href="{{ route('teacher.timetables.index') }}" class="{{ Route::is('teacher.timetables.*') ? 'active' : '' }}">
                 <i class="fas fa-calendar-alt"></i> Timetable
             </a>
+            <a href="{{ route('teacher.tefillin_inspections.index') }}"><i class="fas fa-hourglass-half"></i> Tefillin inspections</a>
+
             <div class="sidebar-items">
                 <h3 class="sidebar-h3">SYSTEM</h3>
                 <div class="sidebar-links1">

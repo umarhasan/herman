@@ -36,7 +36,12 @@ use App\Http\Controllers\User\HebrewCalendarController as UserHebrewCalendarCont
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\Teacher\TeacherBookingController;
 use App\Http\Controllers\Admin\AdminBookingController;
-
+// Tefillin Inspection Controllers
+use App\Http\Controllers\Admin\AdminTefillinInspectionController as AdminCtrl;
+use App\Http\Controllers\Student\StudentTefillinInspectionController as StudentCtrl;
+use App\Http\Controllers\Teacher\TeacherTefillinInspectionController as TeacherCtrl;
+use App\Http\Controllers\Parent\ParentTefillinInspectionController as ParentCtrl;
+use App\Http\Controllers\User\UserTefillinInspectionController as UserCtrl;
 // Frontend Routes
 Route::get('/', [HomeController::class, 'Home'])->name(name: 'home');
 Route::get('/about', [HomeController::class, 'About'])->name('about');
@@ -76,6 +81,7 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     Route::resource('permissions', AdminPermissionController::class)->names('admin.permissions');
     Route::resource('files', FileUploadController::class)->names('admin.files');
     Route::resource('categories', CategoryController::class)->names('admin.categories');
+    Route::resource('tefillin_inspections', AdminCtrl::class)->names('admin.tefillin_inspections');
 
     Route::post('/file/category/update', [FileUploadController::class, 'FileCatUpdate'])->name('admin.file.category.update');
     Route::get('/file/category/delete/{id}', [FileUploadController::class, 'FileCatDelete'])->name('admin.file.category.upload.delete');
@@ -146,6 +152,7 @@ Route::middleware(['auth', 'role:Teacher'])->prefix('teacher')->group(function (
     Route::post('/bookings/{booking}/upload-recording', [TeacherBookingController::class,'uploadRecording'])->name('teacher.bookings.uploadRecording');
     Route::post('/recordings/{recording}/remove', [TeacherBookingController::class,'removeRecording'])->name('teacher.recordings.remove');
 
+    Route::resource('tefillin_inspections', TeacherCtrl::class)->names('teacher.tefillin_inspections');
     });
 
 // Student
@@ -166,6 +173,7 @@ Route::middleware(['auth', 'role:Student'])->prefix('student')->group(function (
     Route::get('/bookings/{booking}', [BookingController::class,'show'])->name('student.bookings.show');
     Route::post('/bookings/{booking}/upload-proof', [BookingController::class,'uploadProof'])->name('student.bookings.uploadProof');
 
+    Route::resource('tefillin_inspections', StudentCtrl::class)->names('student.tefillin_inspections');
 });
 
 // Parent
@@ -180,6 +188,8 @@ Route::middleware(['auth', 'role:Parent'])->prefix('parent')->group(function () 
     Route::post('/convert-g2h', [ParentHebrewCalendarController::class, 'gregorianToHebrew'])->name('parent.converter.g2h');
     Route::post('/convert-h2g', [ParentHebrewCalendarController::class, 'hebrewToGregorian'])->name('parent.converter.h2g');
     Route::get('converter/month-list', [ParentHebrewCalendarController::class, 'calendarListView'])->name('parent.converter.monthlist');
+
+    Route::resource('tefillin_inspections', ParentCtrl::class)->names('parent.tefillin_inspections');
 });
 
 // User
@@ -194,6 +204,8 @@ Route::middleware(['auth', 'role:User'])->prefix('user')->group(function () {
     Route::post('/convert-g2h', [UserHebrewCalendarController::class, 'gregorianToHebrew'])->name('user.converter.g2h');
     Route::post('/convert-h2g', [UserHebrewCalendarController::class, 'hebrewToGregorian'])->name('user.converter.h2g');
     Route::get('converter/month-list', [UserHebrewCalendarController::class, 'calendarListView'])->name('user.converter.monthlist');
+
+    Route::resource('tefillin_inspections', UserCtrl::class)->names('user.tefillin_inspections');
 });
 
 require __DIR__ . '/auth.php';
