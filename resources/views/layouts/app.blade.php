@@ -21,7 +21,36 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fslightbox/3.3.1/index.min.js"></script>
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+@if(session('success'))
+<script>
+    Swal.fire({
+        toast: true,
+        icon: 'success',
+        title: "{{ session('success') }}",
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true
+    });
+</script>
+@endif
+
+@if(session('error'))
+<script>
+    Swal.fire({
+        toast: true,
+        icon: 'error',
+        title: "{{ session('error') }}",
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true
+    });
+</script>
+@endif
 
 <script>
     $('.main-caro').owlCarousel({

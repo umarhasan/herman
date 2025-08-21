@@ -68,6 +68,37 @@
             passwordField.setAttribute("type", type);
         }
     </script>
+    <!-- ✅ SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- ✅ Toaster Message -->
+    @if(session('success'))
+    <script>
+        Swal.fire({
+            toast: true,
+            icon: 'success',
+            title: "{{ session('success') }}",
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        });
+    </script>
+    @endif
+
+    @if(session('error'))
+    <script>
+        Swal.fire({
+            toast: true,
+            icon: 'error',
+            title: "{{ session('error') }}",
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        });
+    </script>
+    @endif
 </body>
 
 </html>
