@@ -7,74 +7,196 @@
     <title>Register</title>
     <link rel="stylesheet" href="{{ asset('Backend/assets/css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .content h3 {
+            text-align: center;
+            color: white;
+            font-size: 30px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin: 0;
+        }
+        .tab-buttons {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .tab-buttons button {
+            padding: 10px 20px;
+            border: none;
+            background: #ddd;
+            margin: 0 5px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .tab-buttons button.active {
+            background: #007bff;
+            color: #fff;
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
 </head>
 
 <body>
     <section class="signupsec">
         <div class="form-container">
+
             <div class="container">
-                <div class="div-logo">
-                    <a href="{{ url('/') }}" class="logo1">Tefillin Rebbe</a>
-                </div>
                 <div class="content">
-                    <h2>CREATE YOUR ACCOUNT</h2>
+                    <h3>CREATE YOUR ACCOUNT</h3>
                     <p>Enter details to register a new account</p>
                 </div>
 
-                <form method="POST" action="{{ route('register') }}">
-                    @csrf
+                <!-- Tabs -->
+                <div class="tab-buttons">
+                    <button type="button" class="tab-btn active" data-tab="student">Student</button>
+                    <button type="button" class="tab-btn" data-tab="teacher">Teacher</button>
+                    <button type="button" class="tab-btn" data-tab="user">User</button>
+                </div>
 
-                    <!-- Name -->
-                    <div class="form-row">
-                        <input type="text" name="name" placeholder="Full Name" value="{{ old('name') }}" required>
-                        @error('name')<span class="text-danger d-block">{{ $message }}</span>@enderror
-                    </div>
+                <!-- Student Form -->
+                <div id="student" class="tab-content active">
+                    <form method="POST" action="{{ route('register') }}">
+                        @csrf
+                        <input type="hidden" name="role" value="student">
 
-                    <!-- Email -->
-                    <div class="form-row">
-                        <input type="email" name="email" placeholder="Email Address" value="{{ old('email') }}" required>
-                        @error('email')<span class="text-danger d-block">{{ $message }}</span>@enderror
-                    </div>
+                        <div class="form-row">
+                            <input type="text" name="name" placeholder="Full Name" required>
+                        </div>
 
-                    <!-- Password -->
-                    <div class="form-row form-btn">
-                        <input type="password" name="password" id="password" placeholder="Password" required>
-                        <span class="toggle-password" onclick="togglePassword()">👁</span>
-                        @error('password')<span class="text-danger d-block">{{ $message }}</span>@enderror
-                    </div>
+                        <div class="form-row">
+                            <input type="email" name="email" placeholder="Email Address" required>
+                        </div>
 
-                    <!-- Confirm Password -->
-                    <div class="form-row">
-                        <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
-                        @error('password_confirmation')<span class="text-danger d-block">{{ $message }}</span>@enderror
-                    </div>
-					<!-- Date of Birth -->
-                    <div class="form-row position-relative">
-                        <input type="date" name="date_of_birth" id="date_of_birth"
-                            value="{{ old('date_of_birth') }}"
-                            class="form-control" required style="padding-right: 40px;">
-                        @error('date_of_birth')
-                            <span class="text-danger d-block mt-1">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <!-- Actions -->
-                    <button type="submit" class="signup-btn">Register</button>
 
-                    <div class="text mt-3">
-                        <p>Already have an account? <a href="{{ route('login') }}">Sign In</a></p>
-                    </div>
-                </form>
+                        <div class="form-row">
+                            <input type="date" name="date_of_birth" placeholder="Date of Birth">
+                        </div>
+
+                        <div class="form-row">
+                            <input type="email" name="parent_email" placeholder="Parent Email" required>
+                        </div>
+
+                        <div class="form-row">
+                            <input type="text" name="parent_phone" placeholder="Parent Phone Number">
+                        </div>
+
+                        <div class="form-row form-btn">
+                            <input type="password" name="password" id="password_student" placeholder="Password" required>
+                            <span class="toggle-password" onclick="togglePassword('password_student')">👁</span>
+                        </div>
+
+                        <div class="form-row">
+                            <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
+                        </div>
+
+                        <button type="submit" class="signup-btn">Register as Student</button>
+                    </form>
+                </div>
+
+                <!-- Teacher Form -->
+                <div id="teacher" class="tab-content">
+                    <form method="POST" action="{{ route('register') }}">
+                        @csrf
+                        <input type="hidden" name="role" value="teacher">
+
+                        <div class="form-row">
+                            <input type="text" name="name" placeholder="Full Name" required>
+                        </div>
+
+                        <div class="form-row">
+                            <input type="email" name="email" placeholder="Email Address" required>
+                        </div>
+
+
+                        <div class="form-row">
+                            <input type="date" name="date_of_birth" placeholder="Date of Birth">
+                        </div>
+
+                        <div class="form-row">
+                            <input type="text" name="experience" placeholder="Experience">
+                        </div>
+
+
+                        <div class="form-row">
+                            <input type="text" name="description" placeholder="Description"></input>
+                        </div>
+
+                        <div class="form-row form-btn">
+                            <input type="password" name="password" id="password_teacher" placeholder="Password" required>
+                            <span class="toggle-password" onclick="togglePassword('password_teacher')">👁</span>
+                        </div>
+
+                        <div class="form-row">
+                            <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
+                        </div>
+
+                        <button type="submit" class="signup-btn">Register as Teacher</button>
+                    </form>
+                </div>
+
+                <!-- User Form -->
+                <div id="user" class="tab-content">
+                    <form method="POST" action="{{ route('register') }}">
+                        @csrf
+                        <input type="hidden" name="role" value="user">
+
+                        <div class="form-row">
+                            <input type="text" name="name" placeholder="Full Name" required>
+                        </div>
+
+                        <div class="form-row">
+                            <input type="email" name="email" placeholder="Email Address" required>
+                        </div>
+
+
+
+                        <div class="form-row">
+                            <input type="date" name="date_of_birth" placeholder="Date of Birth">
+                        </div>
+
+                        <div class="form-row form-btn">
+                            <input type="password" name="password" id="password_user" placeholder="Password" required>
+                            <span class="toggle-password" onclick="togglePassword('password_user')">👁</span>
+                        </div>
+
+                        <div class="form-row">
+                            <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
+                        </div>
+
+                        <button type="submit" class="signup-btn">Register as User</button>
+                    </form>
+                </div>
+
+                <div class="text mt-3">
+                    <p>Already have an account? <a href="{{ route('login') }}">Sign In</a></p>
+                </div>
             </div>
         </div>
     </section>
 
     <script>
-        function togglePassword() {
-            var passwordField = document.getElementById("password");
+        // Toggle Password
+        function togglePassword(id) {
+            var passwordField = document.getElementById(id);
             var type = passwordField.getAttribute("type") === "password" ? "text" : "password";
             passwordField.setAttribute("type", type);
         }
+
+        // Tabs JS
+        const buttons = document.querySelectorAll(".tab-btn");
+        const contents = document.querySelectorAll(".tab-content");
+
+        buttons.forEach(btn => {
+            btn.addEventListener("click", () => {
+                buttons.forEach(b => b.classList.remove("active"));
+                contents.forEach(c => c.classList.remove("active"));
+
+                btn.classList.add("active");
+                document.getElementById(btn.dataset.tab).classList.add("active");
+            });
+        });
     </script>
 </body>
-
 </html>

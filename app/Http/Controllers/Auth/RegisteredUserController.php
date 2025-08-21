@@ -27,29 +27,78 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-        public function store(Request $request): RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'date_of_birth' => ['required', 'date'],
-        ]);
+        $role = $request->role;
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'date_of_birth' => $request->date_of_birth,
-        ]);
+        if ($role === 'student') {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users',
+                'date_of_birth' => 'required|date',
+                'password' => 'required|confirmed|min:6',
+                'parent_email' => 'required|email|unique:users,email',
+                'parent_phone' => 'required',
+            ]);
 
-         // Assign default role
-         $user->assignRole('student');
+            // Parent create
+            $parent = User::create([
+                'name' => $request->name . ' Parent',
+                'email' => $request->parent_email,
+                'password' => Hash::make($request->password),
+            ]);
+            $parent->assignRole('parent');
 
-        event(new Registered($user));
-        Auth::login($user);
+            // Student create
+            $student = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'date_of_birth' => $request->date_of_birth,
+                'password' => Hash::make($request->password),
+            ]);
+            $student->assignRole('student');
 
-        return redirect('/')
-        ->with('success', 'Operation completed successfully!');
+            // ✅ Pivot relation create
+            $parent->children()->attach($student->id);
+        }
+
+        elseif ($role === 'teacher') {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users',
+                'experience' => 'required',
+                'description' => 'required',
+                'password' => 'required|confirmed|min:6',
+            ]);
+
+            $teacher = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'date_of_birth' => $request->date_of_birth,
+                'experience' => $request->experience,
+                'description' => $request->description,
+                'password' => Hash::make($request->password),
+            ]);
+            $teacher->assignRole('teacher');
+        }
+
+        else { // Normal user
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users',
+                'date_of_birth' => 'required|date',
+                'password' => 'required|confirmed|min:6',
+            ]);
+
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'date_of_birth' => $request->date_of_birth,
+                'password' => Hash::make($request->password),
+            ]);
+            $user->assignRole('user');
+        }
+
+        return redirect()->route('login')->with('success', 'Registration successful!');
     }
 }
