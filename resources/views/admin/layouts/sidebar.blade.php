@@ -52,7 +52,7 @@
             <a href="{{ route('admin.permissions.index') }}" class="{{ Route::is('admin.permissions.*') ? 'active' : '' }}">
                 <i class="fas fa-users"></i> Permissions
             </a>
-            <a href="#"><i class="fas fa-calendar-alt"></i> Mezuza</a>
+            <a href="{{ route('admin.mezuza_inspections.index')}}"><i class="fas fa-calendar-alt"></i> Mezuza</a>
             <a href="#"><i class="fas fa-calendar-alt"></i> Subscription</a>
             <a href="{{ route('admin.tefillin_inspections.index')}}"><i class="fas fa-calendar-alt"></i> Tefilin Inspection</a>
             <a href="{{ route('admin.files.index') }}"><i class="fas fa-upload"></i> Book Upload</a>

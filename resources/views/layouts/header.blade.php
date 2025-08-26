@@ -20,6 +20,15 @@
                                 <li><a class="list" href="{{ asset('products') }}">Products</a></li>
                                 <li><a class="list" href="{{ asset('blogs') }}">Blog</a></li>
                                 <li><a class="list" href="{{ asset('contact') }}">Contact Us</a></li>
+                                @role('Teacher')
+                                    <li>
+                                        <a href="{{ route('teacher.chat.list') }}"
+                                        class="list"
+                                        style="display:flex; align-items:center; height:32px">
+                                        Chat
+                                        </a>
+                                    </li>
+                                @endrole
                             </ul>
                         </div>
                     </div>

@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container">
-    <h2 class="mb-3">Tefline Inspections</h2>
+    <h2 class="mb-3">Mezuza Inspections</h2>
     <a href="{{ route('admin.inspections.create') }}" class="btn btn-success mb-3">+ Tefillin Inspections</a>
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -25,7 +25,7 @@
             </tr>
         </thead>
         <tbody>
-        @forelse($inspections as $inspection)
+        @forelse($mezuza as $inspection)
             <tr>
                 <td>{{ $inspection->reference_no }}</td>
                 <td>{{ ucfirst($inspection->type) }}</td>
@@ -54,7 +54,7 @@
     </table>
 
     <div class="d-flex justify-content-center">
-        {{ $inspections->links() }}
+        {{ $mezuza->links() }}
     </div>
 </div>
 @endsection

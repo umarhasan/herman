@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\HebrewCalendarController as AdminHebrewCalendarController;
 use App\Http\Controllers\Admin\FileUploadController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\AdminInspectionController;
 use App\Http\Controllers\Teacher\TeacherDashboardController;
 use App\Http\Controllers\Teacher\HebrewCalendarController as TeacherHebrewCalendarController;
 
@@ -37,11 +38,14 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\Teacher\TeacherBookingController;
 use App\Http\Controllers\Admin\AdminBookingController;
 // Tefillin Inspection Controllers
-use App\Http\Controllers\Admin\AdminTefillinInspectionController as AdminCtrl;
+use App\Http\Controllers\Admin\AdminTefillinInspectionController as AdminTefillin;
+use App\Http\Controllers\Admin\AdminMezuzaController as AdminMezuza;
+
 use App\Http\Controllers\Student\StudentTefillinInspectionController as StudentCtrl;
 use App\Http\Controllers\Teacher\TeacherTefillinInspectionController as TeacherCtrl;
 use App\Http\Controllers\Parent\ParentTefillinInspectionController as ParentCtrl;
 use App\Http\Controllers\User\UserTefillinInspectionController as UserCtrl;
+use App\Http\Controllers\ChatController;
 // Frontend Routes
 Route::get('/', [HomeController::class, 'Home'])->name(name: 'home');
 Route::get('/about', [HomeController::class, 'About'])->name('about');
@@ -52,7 +56,6 @@ Route::get('/teachers', [HomeController::class, 'Teachers'])->name('teachers');
 // Route::get('/', function () {
 //     return view('home');
 // });
-
 
 
 Route::get('/dashboard', function () {
@@ -75,17 +78,25 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     // Teacher-Class-Subject Assignment Routes
     Route::get('assign-teacher/{id}', [TeacherClassSubjectController::class, 'create'])->name('admin.assignments.create');
     Route::post('assign-teacher-subjects', [TeacherClassSubjectController::class, 'store'])->name('admin.assignments.store');
-
     //Roles Management Routes
     Route::resource('roles', AdminRoleController::class)->names('admin.roles');
     Route::resource('permissions', AdminPermissionController::class)->names('admin.permissions');
     Route::resource('files', FileUploadController::class)->names('admin.files');
     Route::resource('categories', CategoryController::class)->names('admin.categories');
-    Route::resource('tefillin_inspections', AdminCtrl::class)->names('admin.tefillin_inspections');
+    Route::resource('tefillin_inspections', AdminTefillin::class)->names('admin.tefillin_inspections');
+    Route::resource('mezuza_inspections', AdminMezuza::class)->names('admin.mezuza_inspections');
+
+    // Inspection Management Routes
+    Route::get('inspections', [AdminInspectionController::class, 'index'])->name('admin.inspections.index');
+    Route::get('inspections/create', [AdminInspectionController::class, 'create'])->name('admin.inspections.create');
+    Route::post('inspections', [AdminInspectionController::class, 'store'])->name('admin.inspections.store');
+    Route::get('inspections/{inspection}', [AdminInspectionController::class, 'show'])->name('iadmin.nspections.show');
+    Route::get('inspections/{inspection}/edit', [AdminInspectionController::class, 'edit'])->name('admin.inspections.edit');
+    Route::put('inspections/{inspection}', [AdminInspectionController::class, 'update'])->name('admin.inspections.update');
+    Route::delete('inspections/{inspection}', [AdminInspectionController::class, 'destroy'])->name('admin.inspections.destroy');
 
     Route::post('/file/category/update', [FileUploadController::class, 'FileCatUpdate'])->name('admin.file.category.update');
     Route::get('/file/category/delete/{id}', [FileUploadController::class, 'FileCatDelete'])->name('admin.file.category.upload.delete');
-
     //Classes Management Routes
     Route::resource('classes', SchoolClassController::class)->names('admin.classes');
     // Class-Subject assignment routes
@@ -153,7 +164,11 @@ Route::middleware(['auth', 'role:Teacher'])->prefix('teacher')->group(function (
     Route::post('/recordings/{recording}/remove', [TeacherBookingController::class,'removeRecording'])->name('teacher.recordings.remove');
 
     Route::resource('tefillin_inspections', TeacherCtrl::class)->names('teacher.tefillin_inspections');
-    });
+    // Chat Teacher
+    Route::get('chat', [ChatController::class, 'teacherChatList'])->name('teacher.chat.list');
+    Route::get('chat/messages/{student}', [ChatController::class, 'teacherMessages'])->name('teacher.chat.messages');
+    Route::post('chat/send', [ChatController::class, 'teacherSend'])->name('teacher.chat.send');
+});
 
 // Student
 Route::middleware(['auth', 'role:Student'])->prefix('student')->group(function () {
@@ -174,6 +189,11 @@ Route::middleware(['auth', 'role:Student'])->prefix('student')->group(function (
     Route::post('/bookings/{booking}/upload-proof', [BookingController::class,'uploadProof'])->name('student.bookings.uploadProof');
 
     Route::resource('tefillin_inspections', StudentCtrl::class)->names('student.tefillin_inspections');
+   // Student start chat
+    Route::get('chat/start/{partner}', [ChatController::class, 'start'])->name('student.chat.start');
+    Route::get('/chat/messages/{teacher}', [ChatController::class, 'messages'])->name('student.chat.messages');
+    Route::post('chat/send', [ChatController::class, 'send'])->name('student.chat.send');
+
 });
 
 // Parent

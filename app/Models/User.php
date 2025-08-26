@@ -74,4 +74,11 @@ class User extends Authenticatable
     {
         return $this->hasOne(Teacher::class);
     }
+
+    public function chats()
+    {
+        return $this->hasMany(Chat::class, 'teacher_id');
+    }
+
+
 }

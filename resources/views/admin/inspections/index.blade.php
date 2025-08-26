@@ -4,8 +4,8 @@
 
 @section('content')
 <div class="container">
-    <h2 class="mb-3">Tefline Inspections</h2>
-    <a href="{{ route('admin.inspections.create') }}" class="btn btn-success mb-3">+ Tefillin Inspections</a>
+    <h2 class="mb-3">Inspection Records</h2>
+    <a href="{{ route('admin.inspections.create') }}" class="btn btn-primary mb-3">+ Add Inspection</a>
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
