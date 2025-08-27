@@ -66,6 +66,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/chat/unread/{id}', [ChatController::class, 'unreadCount']);            // GET unread count
+    Route::post('/chat/mark-as-read/{id}', [ChatController::class, 'markAsRead']);     // POST mark as read
 });
 
 
@@ -165,7 +167,7 @@ Route::middleware(['auth', 'role:Teacher'])->prefix('teacher')->group(function (
 
     Route::resource('tefillin_inspections', TeacherCtrl::class)->names('teacher.tefillin_inspections');
     // Teacher chat endpoints
-    Route::get('/chat', [ChatController::class, 'index'])->name('teacher.chat.index'); // teacher conversation list page
+    Route::get('/chat', [ChatController::class, 'teacherIndex'])->name('teacher.chat.index');
     Route::get('/chat/{studentId}', [ChatController::class, 'fetchMessages'])->name('teacher.chat.fetch');
     Route::post('/chat/{studentId}', [ChatController::class, 'sendMessage'])->name('teacher.chat.send');
 });
