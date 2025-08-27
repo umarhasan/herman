@@ -164,10 +164,10 @@ Route::middleware(['auth', 'role:Teacher'])->prefix('teacher')->group(function (
     Route::post('/recordings/{recording}/remove', [TeacherBookingController::class,'removeRecording'])->name('teacher.recordings.remove');
 
     Route::resource('tefillin_inspections', TeacherCtrl::class)->names('teacher.tefillin_inspections');
-    // Chat Teacher
-    Route::get('chat', [ChatController::class, 'teacherChatList'])->name('teacher.chat.list');
-    Route::get('chat/messages/{student}', [ChatController::class, 'teacherMessages'])->name('teacher.chat.messages');
-    Route::post('chat/send', [ChatController::class, 'teacherSend'])->name('teacher.chat.send');
+    // Teacher chat endpoints
+    Route::get('/chat', [ChatController::class, 'index'])->name('teacher.chat.index'); // teacher conversation list page
+    Route::get('/chat/{studentId}', [ChatController::class, 'fetchMessages'])->name('teacher.chat.fetch');
+    Route::post('/chat/{studentId}', [ChatController::class, 'sendMessage'])->name('teacher.chat.send');
 });
 
 // Student
@@ -189,11 +189,9 @@ Route::middleware(['auth', 'role:Student'])->prefix('student')->group(function (
     Route::post('/bookings/{booking}/upload-proof', [BookingController::class,'uploadProof'])->name('student.bookings.uploadProof');
 
     Route::resource('tefillin_inspections', StudentCtrl::class)->names('student.tefillin_inspections');
-   // Student start chat
-    Route::get('chat/start/{partner}', [ChatController::class, 'start'])->name('student.chat.start');
-    Route::get('/chat/messages/{teacher}', [ChatController::class, 'messages'])->name('student.chat.messages');
-    Route::post('chat/send', [ChatController::class, 'send'])->name('student.chat.send');
 
+    Route::get('/chat/{teacherId}', [ChatController::class, 'fetchMessages'])->name('student.chat.fetch');
+    Route::post('/chat/{teacherId}', [ChatController::class, 'sendMessage'])->name('student.chat.send');
 });
 
 // Parent

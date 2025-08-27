@@ -22,7 +22,7 @@
                                 <li><a class="list" href="{{ asset('contact') }}">Contact Us</a></li>
                                 @role('Teacher')
                                     <li>
-                                        <a href="{{ route('teacher.chat.list') }}"
+                                        <a href="{{ route('teacher.chat.index') }}"
                                         class="list"
                                         style="display:flex; align-items:center; height:32px">
                                         Chat

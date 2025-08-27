@@ -76,9 +76,6 @@
             </p>
 
             <div class="d-flex flex-wrap gap-2 mb-3">
-              {{-- <span class="availability-badge">
-                Availability: {{ is_array($teacher->available_days) ? implode(', ', $teacher->available_days) : 'Not set' }}
-              </span> --}}
               <span class="rate-badge">
                 💲{{ $teacher->hourly_rate ?? 'N/A' }}/hr
               </span>
@@ -195,87 +192,72 @@
 </div>
 @push('scripts')
 <script>
-    $(function(){
-
-        let channel = null;
-
-        function subscribeToChat(chatId){
-            if(channel) {
-                channel.unbind_all();
-                channel.unsubscribe();
-            }
-
-            channel = pusher.subscribe("private-chat." + chatId);
-
-            channel.bind("MessageSent", function(e){
-                console.log("📩 Student got:", e);
-
-                let mine = (e.sender_id == {{ auth()->id() }});
-                let div = `<div class="${mine ? 'text-end mb-2':'text-start mb-2'}">
-                    <span class="d-inline-block px-3 py-2 rounded ${mine ? 'bg-primary text-white':'bg-light'}">
-                        <strong>${e.sender.name}:</strong> ${e.message}
-                        <small class="d-block text-muted">${e.created_at}</small>
-                    </span>
-                </div>`;
-                $("#chat-box-" + e.chat_id).append(div).scrollTop($("#chat-box-" + e.chat_id)[0].scrollHeight);
-            });
-        }
-
-        // open modal and load messages
-        $("[data-bs-target^='#teacherChat']").on("click", function(){
-            let teacherId = $(this).data("bsTarget").replace("#teacherChat","");
-            let chatBox = $("#chat-box-" + teacherId);
-            chatBox.html("<div class='text-muted'>Loading...</div>");
-
-            $.get(`/student/chat/messages/${teacherId}`, function(messages){
-                chatBox.html("");
-                let chatId = null;
-                $.each(messages, function(i,msg){
-                    if(!chatId && msg.chat_id) chatId = msg.chat_id;
-                    chatBox.append(`<div class="${msg.sender_id == {{ auth()->id() }} ? 'text-end mb-2':'text-start mb-2'}">
-                        <span class="d-inline-block px-3 py-2 rounded ${msg.sender_id == {{ auth()->id() }} ? 'bg-primary text-white':'bg-light'}">
-                            <strong>${msg.sender.name}:</strong> ${msg.message}
-                            <small class="d-block text-muted">${msg.created_at}</small>
-                        </span>
-                    </div>`);
-                });
-                if(chatId){
-                    chatBox.attr("id","chat-box-"+chatId);
-                    subscribeToChat(chatId);
-                    $(`#teacherChat${teacherId} .chat-form`).data("chat",chatId);
-                }
-
-            });
-        });
-
-        // send message
-        $(".chat-form").submit(function(e){
-            e.preventDefault();
-            let form = $(this);
-            let teacherId = form.data("teacher");
-            let msg = form.find("input[name='message']").val();
-
-            $.post("{{ route('student.chat.send') }}",
-                {_token:"{{ csrf_token() }}", teacher_id:teacherId, message:msg},
-                function(d){
-                    let chatBox = $("#chat-box-"+(d.chat_id ?? teacherId));
-                    chatBox.append(`<div class="text-end mb-2">
-                        <span class="d-inline-block px-3 py-2 rounded bg-primary text-white">
-                            ${d.message}
-                            <small class="d-block text-light">${d.created_at}</small>
-                        </span>
-                    </div>`);
-
-                    form.find("input[name='message']").val("");
-                    if(d.chat_id){
-                        chatBox.attr("id","chat-box-"+d.chat_id);
-                        subscribeToChat(d.chat_id);
-                        form.data("chat",d.chat_id);
-                    }
-                },"json");
-        });
-
+$(function() {
+    // Setup jQuery ajax CSRF
+    $.ajaxSetup({
+        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
     });
-    </script>
+
+    // When modal opens, fetch history
+    $('[id^="teacherChat"]').on('show.bs.modal', function (e) {
+        const modal = $(this);
+        const teacherId = modal.attr('id').replace('teacherChat','');
+        const chatBox = $('#chat-box-' + teacherId);
+        chatBox.html('<div class="text-muted">Loading...</div>');
+
+        $.get("{{ url('/student/chat') }}/" + teacherId)
+            .done(function(data) {
+                chatBox.html('');
+                data.forEach(m => {
+                    const who = (m.sender_id == {{ auth()->id() }}) ? 'You' : m.sender.name;
+                    const align = (m.sender_id == {{ auth()->id() }}) ? 'text-end' : 'text-start';
+                    chatBox.append(`<div class="${align} mb-2"><small><strong>${who}:</strong></small><div>${m.message}</div></div>`);
+                });
+                chatBox.scrollTop(chatBox[0].scrollHeight);
+            })
+            .fail(function() {
+                chatBox.html('<div class="text-danger">Failed to load messages.</div>');
+            });
+    });
+
+    // Send message
+    $(document).on('submit', '.chat-form', function(e) {
+        e.preventDefault();
+        const form = $(this);
+        const teacherId = form.data('teacher');
+        const input = form.find('input[name=message]');
+        const message = input.val().trim();
+        if (!message) return;
+
+        $.post("{{ url('/student/chat') }}/" + teacherId, { message })
+            .done(function(data) {
+                const chatBox = $('#chat-box-' + teacherId);
+                chatBox.append(`<div class="text-end mb-2"><small><strong>You:</strong></small><div>${data.message}</div></div>`);
+                chatBox.scrollTop(chatBox[0].scrollHeight);
+                input.val('');
+            })
+            .fail(function() {
+                alert('Unable to send message.');
+            });
+    });
+
+    // Listen for incoming messages on private channel for authenticated user
+    window.Echo.private('chat.{{ auth()->id() }}')
+        .listen('MessageSent', (e) => {
+            // e has message payload from broadcastWith
+            const payload = e;
+            const chatBox = $('#chat-box-' + payload.sender_id);
+            // If chat box exists (modal open) append, else you may show a toast (optional)
+            if (chatBox.length) {
+                chatBox.append(`<div class="text-start mb-2"><small><strong>${payload.sender.name}:</strong></small><div>${payload.message}</div></div>`);
+                chatBox.scrollTop(chatBox[0].scrollHeight);
+            } else {
+                // optional: notify user (e.g., using toast)
+                console.log('New message from', payload.sender.name, payload.message);
+            }
+        });
+});
+</script>
 @endpush
+
 @endsection
