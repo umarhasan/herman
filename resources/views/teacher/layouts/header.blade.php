@@ -20,6 +20,10 @@
                     <img src="{{ asset('Backend/assets/images/bell-icon.png') }}" alt="Notifications">
                 </a>
 
+				<a href="{{ route('teacher.chat.index') }}" class="text-decoration-none">
+                    <i class="fa-solid fa-comments me-1"></i> Chat
+                </a>
+
                 <!-- Profile Dropdown without caret -->
                 <div class="dropdown">
                     <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" class="prof">
@@ -32,7 +36,7 @@
                             <small>{{ Auth::user()->email }}</small>
                         </li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="{{ route('teacher.profile.edit') }}">Profile</a></li>
                         <li><a class="dropdown-item" href="#">Change Password</a></li>
                         <li>
                             <form method="POST" action="{{ route('logout') }}">

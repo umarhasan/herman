@@ -1,0 +1,46 @@
+@extends('admin.layouts.app')
+@section('title','Tefillin Records')
+@section('content')
+
+<div class="container">
+  <h3>Tefillin Records</h3>
+  <a class="btn btn-primary" href="{{ route('admin.tefillin-records.create') }}">➕ Add Tefillin Record</a>
+
+    <table id="example" class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th>Ref</th>
+        <th>User</th>
+        <th>Parshe</th>
+        <th>Bought On</th>
+        <th>From</th>
+        <th>Paid</th>
+        <th>Next Due</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+        @foreach($records as $r)
+        <tr>
+        <td>{{ $r->reference_no }}</td>
+        <td>{{ $r->user?->name ?? '-' }}</td>
+        <td>{{ $r->parshe_number }}</td>
+        <td>{{ $r->bought_on->format('m-d-Y') }}</td>
+        <td>{{ $r->bought_from }}</td>
+        <td>{{ $r->paid }}</td>
+        <td>{{ $r->next_due_date->format('m-d-Y') }}</td>
+        <td>
+            <a class="btn btn-sm btn-info" href="{{ route('admin.tefillin-records.show',$r) }}">Show</a>
+            <a class="btn btn-sm btn-warning" href="{{ route('admin.tefillin-records.edit',$r) }}">Edit</a>
+            <form class="d-inline" method="POST" action="{{ route('admin.tefillin-records.destroy',$r) }}">
+            @csrf @method('DELETE')
+            <button class="btn btn-sm btn-danger" onclick="return confirm('Delete?')">Del</button>
+            </form>
+        </td>
+        </tr>
+        @endforeach
+    </tbody>
+    </table>
+    {{ $records->links() }}
+</div>
+@endsection

@@ -1,0 +1,22 @@
+@extends('admin.layouts.app')
+@section('title','Record Book Dashboard')
+@section('content')
+<h3>Users</h3>
+<table id="example" class="table table-bordered table-striped">
+  <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Actions</th></tr></thead>
+  <tbody>
+    @foreach($users as $u)
+    <tr>
+      <td>{{ $u->id }}</td>
+      <td>{{ $u->name }}</td>
+      <td>{{ $u->email }}</td>
+      <td>
+        <a class="btn btn-sm btn-primary" href="{{ route('admin.recordbook.show',$u) }}">View Record Book</a>
+        <a class="btn btn-sm btn-outline-secondary" href="{{ route('admin.recordbook.pdf',$u) }}">Download PDF</a>
+      </td>
+    </tr>
+    @endforeach
+  </tbody>
+</table>
+{{ $users->links() }}
+@endsection

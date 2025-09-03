@@ -80,5 +80,13 @@ class User extends Authenticatable
         return $this->hasMany(Chat::class, 'teacher_id');
     }
 
-
+    public function tefillinRecords(){
+        return $this->hasMany(\App\Models\TefillinRecord::class);
+     }
+    public function batimRecords(){
+        return $this->hasMany(\App\Models\TefillinRecord::class);
+    }
+    public function mezuzaRecords(){
+        return $this->hasMany(\App\Models\MezuzaRecord::class);
+    }
 }

@@ -45,6 +45,11 @@ use App\Http\Controllers\Student\StudentTefillinInspectionController as StudentC
 use App\Http\Controllers\Teacher\TeacherTefillinInspectionController as TeacherCtrl;
 use App\Http\Controllers\Parent\ParentTefillinInspectionController as ParentCtrl;
 use App\Http\Controllers\User\UserTefillinInspectionController as UserCtrl;
+
+use App\Http\Controllers\Admin\TefillinRecordController;
+use App\Http\Controllers\Admin\MezuzaRecordController;
+use App\Http\Controllers\Admin\RecordBookController;
+
 use App\Http\Controllers\ChatController;
 // Frontend Routes
 Route::get('/', [HomeController::class, 'Home'])->name(name: 'home');
@@ -136,6 +141,12 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     Route::post('/bookings/{booking}/approve', [AdminBookingController::class,'approve'])->name('admin.bookings.approve');
     Route::post('/bookings/{booking}/reject', [AdminBookingController::class,'reject'])->name('admin.bookings.reject');
 
+    Route::get('/record-book', [RecordBookController::class,'recordBook'])->name('admin.recordbook.index');
+    Route::resource('/tefillin-records', TefillinRecordController::class)->names('admin.tefillin-records');
+    Route::resource('/mezuza-records', MezuzaRecordController::class)->names('admin.mezuza-records');
+
+    Route::get('record-book/{user}', [RecordBookController::class,'show'])->name('admin.recordbook.show');
+    Route::get('record-book/{user}/pdf', [RecordBookController::class,'pdf'])->name('admin.recordbook.pdf');
 });
 
 // Teacher

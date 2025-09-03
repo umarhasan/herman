@@ -52,9 +52,12 @@
             <a href="{{ route('admin.permissions.index') }}" class="{{ Route::is('admin.permissions.*') ? 'active' : '' }}">
                 <i class="fas fa-users"></i> Permissions
             </a>
-            <a href="{{ route('admin.mezuza_inspections.index')}}"><i class="fas fa-calendar-alt"></i> Mezuza</a>
+            <a href="{{ route('admin.recordbook.index') }}"><i class="fas fa-book"></i> Record Book </a>
+            <a href="{{ route('admin.tefillin-records.index') }}"><i class="fas fa-praying-hands"></i> Tefillin </a>
+            <a href="{{ route('admin.mezuza-records.index') }}"><i class="fas fa-scroll"></i> Mezuza </a>
+            {{-- <a href="{{ route('admin.mezuza_inspections.index')}}"><i class="fas fa-calendar-alt"></i> Mezuza</a> --}}
+            {{-- <a href="{{ route('admin.tefillin_inspections.index')}}"><i class="fas fa-calendar-alt"></i> Tefilin Inspection</a> --}}
             <a href="#"><i class="fas fa-calendar-alt"></i> Subscription</a>
-            <a href="{{ route('admin.tefillin_inspections.index')}}"><i class="fas fa-calendar-alt"></i> Tefilin Inspection</a>
             <a href="{{ route('admin.files.index') }}"><i class="fas fa-upload"></i> Book Upload</a>
             <a href="{{ route('admin.hebcalendar.index') }}"><i class="fas fa-calendar-alt"></i> Hebrew Calendar</a>
             <a href="{{ route('admin.countdown') }}"><i class="fas fa-hourglass-half"></i> Countdown</a>
