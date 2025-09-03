@@ -13,7 +13,7 @@ class AdminTefillinInspectionController extends Controller
     // Index
     public function index()
     {
-        $inspections = Inspection::with('user')->where('type','tefillin')->paginate(10);
+        $inspections = Inspection::with('user')->where('type','tefillin')->get();
         return view('admin.tefillin_inspections.index',compact('inspections'));
     }
     // Create

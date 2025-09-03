@@ -19,6 +19,5 @@
     @endforeach
   </tbody>
 </table>
-{{ $users->links() }}
 </div>
 @endsection

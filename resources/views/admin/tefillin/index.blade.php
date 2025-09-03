@@ -42,7 +42,6 @@
         @endforeach
     </tbody>
     </table>
-    {{ $records->links() }}
   </div>
 </div>
 @endsection

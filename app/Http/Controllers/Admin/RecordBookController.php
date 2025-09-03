@@ -8,7 +8,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 class RecordBookController extends Controller
 {
     public function recordBook(){
-        $users = User::orderBy('name')->paginate(20);
+        $users = User::orderBy('name')->get();
         return view('admin.recordbook.index', compact('users'));
     }
 
