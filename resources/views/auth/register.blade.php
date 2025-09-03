@@ -35,12 +35,29 @@
         }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
+        .form-container1 {
+            background: #CC992E;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            height: 110vh;
+            font-family: 'Montserrat';
+        }
+        label {
+            padding: 15px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #f7f5f5;
+            margin-bottom: 6px;
+            margin-top: 15px;
+        }
     </style>
 </head>
 
 <body>
     <section class="signupsec">
-        <div class="form-container">
+        <div class="form-container1">
 
             <div class="container">
                 <div class="content">
@@ -60,33 +77,33 @@
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
                         <input type="hidden" name="role" value="student">
-
+                        <label>Full Name</label>
                         <div class="form-row">
                             <input type="text" name="name" placeholder="Full Name" required>
                         </div>
-
+                        <label>Email Address</label>
                         <div class="form-row">
                             <input type="email" name="email" placeholder="Email Address" required>
                         </div>
 
-
+                        <label>Date of Birth</label>
                         <div class="form-row">
                             <input type="date" name="date_of_birth" placeholder="Date of Birth">
                         </div>
-
+                        <label>Parent Email</label>
                         <div class="form-row">
                             <input type="email" name="parent_email" placeholder="Parent Email" required>
                         </div>
-
+                        <label>Parent Phone Number</label>
                         <div class="form-row">
                             <input type="text" name="parent_phone" placeholder="Parent Phone Number">
                         </div>
-
+                        <label>Password</label>
                         <div class="form-row form-btn">
                             <input type="password" name="password" id="password_student" placeholder="Password" required>
                             <span class="toggle-password" onclick="togglePassword('password_student')">👁</span>
                         </div>
-
+                        <label>Confirm Password</label>
                         <div class="form-row">
                             <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
                         </div>
@@ -100,34 +117,38 @@
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
                         <input type="hidden" name="role" value="teacher">
-
+                        <label>Full Name</label>
                         <div class="form-row">
                             <input type="text" name="name" placeholder="Full Name" required>
                         </div>
 
+                        <label>Email Address</label>
                         <div class="form-row">
                             <input type="email" name="email" placeholder="Email Address" required>
                         </div>
 
-
+                        <label>Date Of Birth</label>
                         <div class="form-row">
                             <input type="date" name="date_of_birth" placeholder="Date of Birth">
                         </div>
 
+                        <label>experience</label>
                         <div class="form-row">
                             <input type="text" name="experience" placeholder="Experience">
                         </div>
 
-
+                        <label>Description</label>
                         <div class="form-row">
                             <input type="text" name="description" placeholder="Description"></input>
                         </div>
 
+                        <label>Password</label>
                         <div class="form-row form-btn">
                             <input type="password" name="password" id="password_teacher" placeholder="Password" required>
                             <span class="toggle-password" onclick="togglePassword('password_teacher')">👁</span>
                         </div>
 
+                        <label>Confirm Password</label>
                         <div class="form-row">
                             <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
                         </div>
@@ -141,26 +162,28 @@
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
                         <input type="hidden" name="role" value="user">
-
+                        <label>Full Name</label>
                         <div class="form-row">
                             <input type="text" name="name" placeholder="Full Name" required>
                         </div>
 
+                        <label>Email Address</label>
                         <div class="form-row">
                             <input type="email" name="email" placeholder="Email Address" required>
                         </div>
 
-
-
+                        <label>Date Of Birth</label>
                         <div class="form-row">
                             <input type="date" name="date_of_birth" placeholder="Date of Birth">
                         </div>
 
+                        <label>Password</label>
                         <div class="form-row form-btn">
                             <input type="password" name="password" id="password_user" placeholder="Password" required>
                             <span class="toggle-password" onclick="togglePassword('password_user')">👁</span>
                         </div>
 
+                        <label>Confirm</label>
                         <div class="form-row">
                             <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
                         </div>

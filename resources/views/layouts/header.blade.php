@@ -44,10 +44,32 @@
                                     {{ Auth::user()->name }}
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a class="dropdown-item" href="#">Profile</a></li>
-                                        @if(Auth::user()->hasRole('Admin'))
-                                            <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">Admin Dashboard</a></li>
-                                        @endif
+                                    <li><a class="dropdown-item" href="{{ route('profile')}}">Profile</a></li>
+                                    @if(Auth::user()->hasRole('Admin'))
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
+                                            Admin Dashboard
+                                        </a>
+                                    </li>
+                                @elseif(Auth::user()->hasRole('Teacher'))
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('teacher.dashboard') }}">
+                                            Teacher Dashboard
+                                        </a>
+                                    </li>
+                                @elseif(Auth::user()->hasRole('Student'))
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('student.dashboard') }}">
+                                            Student Dashboard
+                                        </a>
+                                    </li>
+                                @else
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('user.dashboard') }}">
+                                            User Dashboard
+                                        </a>
+                                    </li>
+                                @endif
                                     <li><hr class="dropdown-divider"></li>
                                     <li>
                                         <form method="POST" action="{{ route('logout') }}">
@@ -93,7 +115,59 @@
 
                                 <div class="loginbtns mt-3">
                                     @auth
+                                        <!-- Dropdown for Logged-in User -->
                                         <div class="dropdown">
+                                            <a class="dropdown-toggle login" href="#" role="button" data-bs-toggle="dropdown">
+                                                {{ Auth::user()->name }}
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-end">
+
+                                                {{-- Profile link (common for all) --}}
+                                                <li>
+                                                    <a class="dropdown-item" href="#">
+                                                        Profile
+                                                    </a>
+                                                </li>
+
+                                                {{-- Role based dashboard link --}}
+                                                @if(Auth::user()->hasRole('Admin'))
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
+                                                            Admin Dashboard
+                                                        </a>
+                                                    </li>
+                                                @elseif(Auth::user()->hasRole('Teacher'))
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ route('teacher.dashboard') }}">
+                                                            Teacher Dashboard
+                                                        </a>
+                                                    </li>
+                                                @elseif(Auth::user()->hasRole('Student'))
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ route('student.dashboard') }}">
+                                                            Student Dashboard
+                                                        </a>
+                                                    </li>
+                                                @else
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ route('user.dashboard') }}">
+                                                            User Dashboard
+                                                        </a>
+                                                    </li>
+                                                @endif
+
+                                                <li><hr class="dropdown-divider"></li>
+
+                                                {{-- Logout --}}
+                                                <li>
+                                                    <form method="POST" action="{{ route('logout') }}">
+                                                        @csrf
+                                                        <button type="submit" class="dropdown-item text-danger">Logout</button>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        {{-- <div class="dropdown">
                                             <a class="dropdown-toggle login" href="#" role="button" data-bs-toggle="dropdown">
                                                 {{ Auth::user()->name }}
                                             </a>
@@ -110,7 +184,7 @@
                                                     </form>
                                                 </li>
                                             </ul>
-                                        </div>
+                                        </div> --}}
                                     @else
                                         <a class="login d-block mb-2" href="{{ asset('login') }}">Login</a>
                                         <a class="login d-block" href="#">Subscribe Now</a>
