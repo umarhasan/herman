@@ -6,7 +6,8 @@
   <h3>Tefillin Records</h3>
   <a class="btn btn-primary" href="{{ route('admin.tefillin-records.create') }}">➕ Add Tefillin Record</a>
 
-    <table id="example" class="table table-bordered table-striped">
+  <div class="table-responsive">
+    <table id="example" class="table table-striped w-100">
     <thead>
     <tr>
         <th>Ref</th>
@@ -42,5 +43,6 @@
     </tbody>
     </table>
     {{ $records->links() }}
+  </div>
 </div>
 @endsection
