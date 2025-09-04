@@ -49,15 +49,15 @@
   </div>
 
   <div class="row mt-3">
-    <div class="col-md-4">
+    <div class="col-md-3">
       <label>Inspected By</label>
       <input name="inspected_by" value="{{ old('inspected_by',$record->inspected_by) }}" class="form-control">
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
       <label>Inspected On</label>
       <input type="date" id="inspected_on" name="inspected_on" value="{{ old('inspected_on', optional($record->inspected_on)->format('Y-m-d')) }}" class="form-control">
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
       <label>User (owner)</label>
       <select name="user_id" class="form-control">
         <option value="">-- select user (optional) --</option>
@@ -66,6 +66,17 @@
         @endforeach
       </select>
     </div>
+    <div class="col-md-3">
+        <label>Phone Number</label>
+        <input type="tel"
+               name="phone_number"
+               value="{{ old('phone_number',$record->phone_number) }}"
+               class="form-control"
+               pattern="^\+?[0-9]{7,15}$"
+               title="Enter a valid phone number: +CountryCode and 7–15 digits">
+        <small class="text-muted">Example:+14155552671</small>
+    </div>
+
   </div>
 
   <div class="mt-3">

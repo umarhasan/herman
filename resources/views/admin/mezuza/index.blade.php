@@ -11,6 +11,8 @@
                 <th>ID</th>
                 <th>User</th>
                 <th>Location</th>
+                <th>Door</th>                {{-- new --}}
+                <th>Phone</th>   {{-- new --}}
                 <th>Inspected By</th>
                 <th>Inspected On</th>
                 <th>Next Due Date</th>
@@ -24,16 +26,23 @@
                     <td>{{ $record->id }}</td>
                     <td>{{ $record->user?->name }}</td>
                     <td>{{ $record->location }}</td>
+                    <td>{{ $record->door_description ?? '-' }}</td>  {{-- new --}}
+                    <td>{{ $record->bought_from_phone ?? '-' }}</td> {{-- new --}}
                     <td>{{ $record->inspected_by }}</td>
-                    <td>{{ $record->inspected_on }}</td>
-                    <td>{{ $record->next_due_date }}</td>
+                     {{-- ✅ format Y-m-d if not null --}}
+        <td>
+            {{ $record->inspected_on ? $record->inspected_on->format('Y-m-d') : '-' }}
+        </td>
+        <td>
+            {{ $record->next_due_date ? \Carbon\Carbon::parse($record->next_due_date)->format('Y-m-d') : '-' }}
+        </td>
                     <td>{{ $record->paid ? '$'.$record->paid : '-' }}</td>
                     <td>
-                        <a href="{{ route('admin.mezuza-records.show',$record->id) }}" class="btn btn-info btn-sm">👁 View</a>
-                        <a href="{{ route('admin.mezuza-records.edit',$record->id) }}" class="btn btn-warning btn-sm">✏ Edit</a>
+                        <a href="{{ route('admin.mezuza-records.show',$record->id) }}" class="btn btn-info btn-sm">👁 </a>
+                        <a href="{{ route('admin.mezuza-records.edit',$record->id) }}" class="btn btn-warning btn-sm">✏</a>
                         <form action="{{ route('admin.mezuza-records.destroy',$record->id) }}" method="POST" style="display:inline-block;">
                             @csrf @method('DELETE')
-                            <button class="btn btn-danger btn-sm" onclick="return confirm('Delete this record?')">🗑 Delete</button>
+                            <button class="btn btn-danger btn-sm" onclick="return confirm('Delete this record?')">🗑</button>
                         </form>
                     </td>
                 </tr>

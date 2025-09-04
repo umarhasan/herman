@@ -85,8 +85,7 @@
                         <div class="form-row">
                             <input type="email" name="email" placeholder="Email Address" required>
                         </div>
-
-                        <label>Date of Birth</label>
+                        <label>Date Of Birth</label>
                         <div class="form-row">
                             <input type="date" name="date_of_birth" placeholder="Date of Birth">
                         </div>
@@ -107,7 +106,6 @@
                         <div class="form-row">
                             <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
                         </div>
-
                         <button type="submit" class="signup-btn">Register as Student</button>
                     </form>
                 </div>
@@ -122,7 +120,7 @@
                             <input type="text" name="name" placeholder="Full Name" required>
                         </div>
 
-                        <label>Email Address</label>
+                        <label>Email</label>
                         <div class="form-row">
                             <input type="email" name="email" placeholder="Email Address" required>
                         </div>
@@ -132,7 +130,7 @@
                             <input type="date" name="date_of_birth" placeholder="Date of Birth">
                         </div>
 
-                        <label>experience</label>
+                        <label>Experience</label>
                         <div class="form-row">
                             <input type="text" name="experience" placeholder="Experience">
                         </div>
@@ -162,12 +160,12 @@
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
                         <input type="hidden" name="role" value="user">
-                        <label>Full Name</label>
+                        <label>Name</label>
                         <div class="form-row">
                             <input type="text" name="name" placeholder="Full Name" required>
                         </div>
 
-                        <label>Email Address</label>
+                        <label>Email</label>
                         <div class="form-row">
                             <input type="email" name="email" placeholder="Email Address" required>
                         </div>

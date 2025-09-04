@@ -13,10 +13,11 @@
         <th>Ref</th>
         <th>User</th>
         <th>Parshe</th>
-        <th>Bought On</th>
+        <th>Phone Number</th>
         <th>From</th>
         <th>Paid</th>
-        <th>Next Due</th>
+        <th>Inspection Date</th>
+        <th>Next Due Date</th>
         <th>Actions</th>
     </tr>
     </thead>
@@ -26,9 +27,10 @@
         <td>{{ $r->reference_no }}</td>
         <td>{{ $r->user?->name ?? '-' }}</td>
         <td>{{ $r->parshe_number }}</td>
-        <td>{{ $r->bought_on->format('m-d-Y') }}</td>
+        <td>{{ $r->phone_number }}</td>
         <td>{{ $r->bought_from }}</td>
         <td>{{ $r->paid }}</td>
+        <td>{{ $r->inspected_on->format('m-d-Y') }}</td>
         <td>{{ $r->next_due_date->format('m-d-Y') }}</td>
         <td>
             <a class="btn btn-sm btn-info" href="{{ route('admin.tefillin-records.show',$r) }}">Show</a>

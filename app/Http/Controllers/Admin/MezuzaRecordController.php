@@ -14,10 +14,11 @@ class MezuzaRecordController extends Controller
     public function store(Request $request){
         $data = $request->validate([
             'location'=>'required|max:255',
-            'reference_no'=>'nullable|max:60',
-            'written_on'=>'nullable|date',
+            'door_description'=>'nullable|max:255', // which door
             'bought_from'=>'nullable|max:255',
+            'bought_from_phone'=>'nullable|regex:/^\+?[0-9]{7,15}$/', // phone validation
             'paid'=>'nullable|numeric',
+            'written_on'=>'nullable|date',
             'inspected_by'=>'nullable|max:255',
             'inspected_on'=>'nullable|date',
             'reminder_email_on'=>'nullable|date',
@@ -25,6 +26,10 @@ class MezuzaRecordController extends Controller
             'notes'=>'nullable|string',
             'user_id'=>'nullable|exists:users,id',
         ]);
+
+        $lastId = MezuzaRecord::max('id') + 1;
+        $data['reference_no'] = 'MEZ-'.date('Y').'-'.str_pad($lastId,5,'0',STR_PAD_LEFT);
+
 
         if (!empty($data['inspected_on'])) {
             $data['next_due_date'] = Carbon::parse($data['inspected_on'])->addMonths(42)->toDateString();
@@ -40,8 +45,9 @@ class MezuzaRecordController extends Controller
     public function update(Request $request, MezuzaRecord $mezuza_record){
         $data = $request->validate([
             'location'=>'required|max:255',
-            'reference_no'=>'nullable|max:60',
             'written_on'=>'nullable|date',
+            'door_description'=>'nullable|max:255',
+            'bought_from_phone'=>'nullable|regex:/^\+?[0-9]{7,15}$/',
             'bought_from'=>'nullable|max:255',
             'paid'=>'nullable|numeric',
             'inspected_by'=>'nullable|max:255',
@@ -51,6 +57,9 @@ class MezuzaRecordController extends Controller
             'notes'=>'nullable|string',
             'user_id'=>'nullable|exists:users,id',
         ]);
+
+        $lastId = MezuzaRecord::max('id') + 1;
+        $data['reference_no'] = 'MEZ-'.date('Y').'-'.str_pad($lastId,5,'0',STR_PAD_LEFT);
 
         if (!empty($data['inspected_on'])) $data['next_due_date'] = Carbon::parse($data['inspected_on'])->addMonths(42)->toDateString();
         else $data['next_due_date'] = null;

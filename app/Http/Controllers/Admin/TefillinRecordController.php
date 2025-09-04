@@ -34,6 +34,7 @@ class TefillinRecordController extends Controller
             'inspected_by'=>'nullable|string|max:255',
             'inspected_on'=>'nullable|date',
             'user_id'=>'nullable|exists:users,id',
+            'phone_number'=>'nullable|string|max:20',
         ]);
 
         // Arm always parshe 1
@@ -85,6 +86,7 @@ class TefillinRecordController extends Controller
             'inspected_by'=>'nullable|string|max:255',
             'inspected_on'=>'nullable|date',
             'user_id'=>'nullable|exists:users,id',
+            'phone_number'=>'nullable|string|max:20',
         ]);
 
         if($data['type'] === 'arm') $data['parshe_number'] = 1;
