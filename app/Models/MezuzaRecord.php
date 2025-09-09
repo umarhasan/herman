@@ -6,19 +6,27 @@ class MezuzaRecord extends Model
 {
     protected $fillable = [
         'location',
-        'door_description',        // added
-        'reference_no',
+        'house_number',
+        'room_number',
+        'street_number',
+        'street_name',
+        'area_name',
+        'city',
+        'country',
+        'door_description',
         'written_on',
         'bought_from',
-        'bought_from_phone',       // added
+        'bought_from_phone_code',
+        'bought_from_phone_number',
         'paid',
         'inspected_by',
         'inspected_on',
-        'next_due_date',
         'reminder_email_on',
         'condition',
         'notes',
-        'user_id'
+        'reference_no',
+        'next_due_date',
+        'user_id',
     ];
 
     protected $casts = [

@@ -110,7 +110,9 @@
             <table>
                 @foreach($mezuza as $m)
                     <tr>
-                        <td>Mezuzah #{{ $loop->iteration }} {{ $m->location }} written on {{ $m->written_on ? \Carbon\Carbon::parse($m->written_on)->format('d-m-Y') : '/ /' }}</td>
+                        <td>Mezuzah #{{ $loop->iteration }}{{ $m->house_number }}{{ $m->street_number }},{{ $m->street_name }},{{ $m->area_name }},
+                            {{ $m->city }},
+                            {{ $m->country }} written on {{ $m->written_on ? \Carbon\Carbon::parse($m->written_on)->format('d-m-Y') : '/ /' }}</td>
                         <td>Bought From Rabbi {{ $m->bought_from ?? '____' }}</td>
                         <td>Paid ${{ $m->paid ?? '____' }}</td>
                         <td>Inspected By {{ $m->inspected_by ?? '____' }}</td>

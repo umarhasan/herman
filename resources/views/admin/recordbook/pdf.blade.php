@@ -108,7 +108,11 @@
       <table>
         @forelse($mezuza as $m)
           <tr>
-            <td>Mezuzah #{{ $loop->iteration }} {{ $m->location }}</td>
+            <td>Mezuzah #{{ $loop->iteration }} {{ $m->house_number }} {{ $m->street_number }},
+                {{ $m->street_name }},
+                {{ $m->area_name }},
+                {{ $m->city }},
+                {{ $m->country }}</td>
             <td>
               @if($m && $m->written_on) written on {{ \Carbon\Carbon::parse($m->written_on)->format('Y-m-d') }} @else written on / / @endif
             </td>

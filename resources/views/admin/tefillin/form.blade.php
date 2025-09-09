@@ -42,10 +42,18 @@
       <label>Bought From</label>
       <input name="bought_from" value="{{ old('bought_from',$record->bought_from) }}" class="form-control">
     </div>
+    {{-- Seller Phone with country dropdown --}}
     <div class="col-md-3">
-      <label>Paid</label>
-      <input name="paid" value="{{ old('paid',$record->paid) }}" class="form-control" type="number" step="0.01">
+        <label>Phone Number</label>
+        <input type="tel"
+               id="seller_phone"
+               name="phone_number"
+               class="form-control"
+               value="{{ old('phone_number', $record->phone_number) }}">
+        <small class="text-muted">Select country code & enter number</small>
     </div>
+
+
   </div>
 
   <div class="row mt-3">
@@ -67,14 +75,8 @@
       </select>
     </div>
     <div class="col-md-3">
-        <label>Phone Number</label>
-        <input type="tel"
-               name="phone_number"
-               value="{{ old('phone_number',$record->phone_number) }}"
-               class="form-control"
-               pattern="^\+?[0-9]{7,15}$"
-               title="Enter a valid phone number: +CountryCode and 7–15 digits">
-        <small class="text-muted">Example:+14155552671</small>
+        <label>Paid</label>
+        <input name="paid" value="{{ old('paid',$record->paid) }}" class="form-control" type="number" step="0.01">
     </div>
 
   </div>
@@ -84,7 +86,35 @@
     <a class="btn btn-secondary" href="{{ route('admin.tefillin-records.index') }}">Cancel</a>
   </div>
 </form>
+{{-- Include intl-tel-input --}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
 
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var input = document.querySelector("#seller_phone");
+    var iti = window.intlTelInput(input, {
+        initialCountry: "pk",
+        separateDialCode: true,
+        preferredCountries: ['pk','in','us','gb'],
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+    });
+
+    // update placeholder with dial code
+    function updatePlaceholder() {
+        var countryData = iti.getSelectedCountryData();
+        input.placeholder = '+' + countryData.dialCode + ' 3001234567';
+    }
+
+    updatePlaceholder();
+    input.addEventListener('countrychange', updatePlaceholder);
+
+    // on submit, replace value with full international number
+    input.form.addEventListener("submit", function() {
+        input.value = iti.getNumber();
+    });
+});
+</script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const type = document.getElementById('type');
