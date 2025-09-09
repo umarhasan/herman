@@ -30,8 +30,8 @@
         <td>{{ $r->phone_number }}</td>
         <td>{{ $r->bought_from }}</td>
         <td>{{ $r->paid }}</td>
-        <td>{{ $r->inspected_on->format('m-d-Y') }}</td>
-        <td>{{ $r->next_due_date->format('m-d-Y') }}</td>
+        <td>{{ $r->inspected_on ? $r->inspected_on->format('m-d-Y') : '' }}</td>
+        <td>{{ $r->next_due_date ? $r->next_due_date->format('m-d-Y') : '' }}</td>
         <td>
             <a class="btn btn-sm btn-info" href="{{ route('admin.tefillin-records.show',$r) }}">Show</a>
             <a class="btn btn-sm btn-warning" href="{{ route('admin.tefillin-records.edit',$r) }}">Edit</a>

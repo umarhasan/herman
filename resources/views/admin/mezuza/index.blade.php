@@ -9,14 +9,14 @@
 
     <a href="{{ route('admin.mezuza-records.create') }}" class="btn btn-primary mb-3">➕ Add New</a>
 
-    <table class="table table-bordered table-striped">
+    <table id="example" class="table table-striped w-100">
         <thead>
             <tr>
                 <th>#</th>
                 <th>User</th>
                 <th>Address</th>
-                <th>Door</th>
-                <th>Seller</th>
+                {{-- <th>Door</th>
+                <th>Seller</th> --}}
                 <th>Phone</th>
                 <th>Paid</th>
                 <th>Inspected On</th>
@@ -29,14 +29,16 @@
                 <td>{{ $record->reference_no }}</td>
                 <td>{{ $record->user?->name }}</td>
                 <td>
-                    {{ $record->house_number }} {{ $record->street_number }},
-                    {{ $record->street_name }},
-                    {{ $record->area_name }},
-                    {{ $record->city }},
-                    {{ $record->country }}
-                </td>
-                <td>{{ $record->door_description }}</td>
-                <td>{{ $record->bought_from }}</td>
+                    <ul class="list-unstyled mb-0">
+                      <li>{{ $record->house_number }} {{ $record->street_number }}</li>
+                      <li>{{ $record->street_name }}</li>
+                      <li>{{ $record->area_name }}</li>
+                      <li>{{ $record->city }}</li>
+                      <li>{{ $record->country }}</li>
+                    </ul>
+                  </td>
+                {{-- <td>{{ $record->door_description }}</td> --}}
+                {{-- <td>{{ $record->bought_from }}</td> --}}
                 <td>{{ $record->bought_from_phone_code }} {{ $record->bought_from_phone_number }}</td>
                 <td>{{ $record->paid }}</td>
                 <td>{{ optional($record->inspected_on)->format('Y-m-d') }}</td>
