@@ -94,7 +94,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     var input = document.querySelector("#seller_phone");
     var iti = window.intlTelInput(input, {
-        initialCountry: "pk",
+        initialCountry: "us",
         separateDialCode: true,
         preferredCountries: ['pk','in','us','gb'],
         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
