@@ -1,25 +1,19 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Test extends Model
 {
-    protected $fillable = ['title', 'school_class_id', 'subject_id', 'date'];
+    protected $fillable = ['teacher_id','title','description'];
 
     public function questions()
     {
         return $this->hasMany(Question::class);
     }
 
-    public function class()
+    public function teacher()
     {
-        return $this->belongsTo(SchoolClass::class, 'school_class_id');
-    }
-
-    public function subject()
-    {
-        return $this->belongsTo(Subject::class);
+        return $this->belongsTo(\App\Models\User::class,'teacher_id');
     }
 }

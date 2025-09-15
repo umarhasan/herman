@@ -19,6 +19,9 @@
                 <i class="fas fa-calendar-alt"></i> Timetable
             </a>
             <a href="{{ route('teacher.recordbooks') }}"><i class="fas fa-hourglass-half"></i> Record Books</a>
+            <a href="{{ route('teacher.tests.index') }}" class="{{ Route::is('tests.*')?'active':'' }}">
+                <i class="fas fa-file-alt"></i> Tests / Exams
+              </a>
             <div class="sidebar-items">
                 <h3 class="sidebar-h3">SYSTEM</h3>
                 <div class="sidebar-links1">

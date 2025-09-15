@@ -36,9 +36,9 @@
                 <i class="fas fa-user-check"></i> Attendance
             </a>
 
-            <a href="{{ route('admin.tests.index') }}" class="{{ Route::is('admin.tests.*') ? 'active' : '' }}">
+            {{-- <a href="{{ route('admin.tests.index') }}" class="{{ Route::is('admin.tests.*') ? 'active' : '' }}">
                 <i class="fas fa-clipboard-list"></i> Test/Exams
-            </a>
+            </a> --}}
 
             <a href="{{ route('admin.resources.index') }}" class="{{ Route::is('admin.resources.*') ? 'active' : '' }}">
                 <i class="fas fa-folder-open"></i> Resources

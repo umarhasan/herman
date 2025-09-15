@@ -10,6 +10,7 @@
     <table id="example" class="table table-bordered">
         <thead>
             <tr>
+                <th>#</th>
                 <th>Title</th>
                 <th>Class</th>
                 <th>Subject</th>
@@ -18,8 +19,11 @@
             </tr>
         </thead>
         <tbody>
+            <?php $i = 0; ?>
         @foreach($tests as $test)
+        <?php $i++; ?>
             <tr>
+                <td>{{ $i }}</td>
                 <td>{{ $test->title }}</td>
                 <td>{{ $test->class->name }}</td>
                 <td>{{ $test->subject->name }}</td>

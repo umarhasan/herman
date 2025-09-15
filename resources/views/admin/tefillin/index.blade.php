@@ -24,22 +24,22 @@
     <tbody>
         @foreach($records as $r)
         <tr>
-        <td>{{ $r->reference_no }}</td>
-        <td>{{ $r->user?->name ?? '-' }}</td>
-        <td>{{ $r->parshe_number }}</td>
-        <td>{{ $r->phone_number }}</td>
-        <td>{{ $r->bought_from }}</td>
-        <td>{{ $r->paid }}</td>
-        <td>{{ $r->inspected_on ? $r->inspected_on->format('m-d-Y') : '' }}</td>
-        <td>{{ $r->next_due_date ? $r->next_due_date->format('m-d-Y') : '' }}</td>
-        <td>
-            <a class="btn btn-sm btn-info" href="{{ route('admin.tefillin-records.show',$r) }}">Show</a>
-            <a class="btn btn-sm btn-warning" href="{{ route('admin.tefillin-records.edit',$r) }}">Edit</a>
-            <form class="d-inline" method="POST" action="{{ route('admin.tefillin-records.destroy',$r) }}">
-            @csrf @method('DELETE')
-            <button class="btn btn-sm btn-danger" onclick="return confirm('Delete?')">Del</button>
-            </form>
-        </td>
+            <td>{{ $r->reference_no }}</td>
+            <td>{{ $r->user?->name ?? '-' }}</td>
+            <td>{{ $r->parshe_number }}</td>
+            <td>{{ $r->phone_number }}</td>
+            <td>{{ $r->bought_from }}</td>
+            <td>{{ $r->paid }}</td>
+            <td>{{ $r->inspected_on ? $r->inspected_on->format('m-d-Y') : '' }}</td>
+            <td>{{ $r->next_due_date ? $r->next_due_date->format('m-d-Y') : '' }}</td>
+            <td>
+                <a class="btn btn-sm btn-info" href="{{ route('admin.tefillin-records.show',$r) }}">Show</a>
+                <a class="btn btn-sm btn-warning" href="{{ route('admin.tefillin-records.edit',$r) }}">Edit</a>
+                <form class="d-inline" method="POST" action="{{ route('admin.tefillin-records.destroy',$r) }}">
+                    @csrf @method('DELETE')
+                    <button class="btn btn-sm btn-danger" onclick="return confirm('Delete?')">Delete</button>
+                </form>
+            </td>
         </tr>
         @endforeach
     </tbody>

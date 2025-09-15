@@ -14,6 +14,7 @@
             <a href="{{ route('student.bookings')}}"><i class="fas fa-bullhorn"></i> Bookings</a>
             <a href="{{ route('student.countdown') }}"><i class="fas fa-hourglass-half"></i> Countdown</a>
             <a href="{{ route('student.recordbooks') }}"><i class="fas fa-hourglass-half"></i> Record Books</a>
+            <a href="{{ route('student.tests.index') }}"><i class="fas fa-hourglass-half"></i> Student Test</a>
         </div>
     </div>
 

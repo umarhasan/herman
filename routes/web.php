@@ -50,6 +50,9 @@ use App\Http\Controllers\Admin\TefillinRecordController;
 use App\Http\Controllers\Admin\MezuzaRecordController;
 use App\Http\Controllers\Admin\RecordBookController;
 
+use App\Http\Controllers\Teacher\TestController as TeacherTestController;
+use App\Http\Controllers\Student\TestController as StudentTestController;
+
 use App\Http\Controllers\ChatController;
 // Frontend Routes
 Route::get('/', [HomeController::class, 'Home'])->name(name: 'home');
@@ -184,6 +187,10 @@ Route::middleware(['auth', 'role:Teacher'])->prefix('teacher')->group(function (
     Route::get('/chat', [ChatController::class, 'teacherIndex'])->name('teacher.chat.index');
     Route::get('/chat/{studentId}', [ChatController::class, 'fetchMessages'])->name('teacher.chat.fetch');
     Route::post('/chat/{studentId}', [ChatController::class, 'sendMessage'])->name('teacher.chat.send');
+
+    Route::resource('tests', TeacherTestController::class)->names('teacher.tests');
+    Route::post('tests/{test}/questions', [TeacherTestController::class,'storeQuestion'])->name('teacher.tests.questions.store');
+    Route::delete('questions/{question}', [TeacherTestController::class,'destroyQuestion'])->name('teacher.questions.destroy');
 });
 
 // Student
@@ -210,6 +217,10 @@ Route::middleware(['auth', 'role:Student'])->prefix('student')->group(function (
 
     Route::get('/chat/{teacherId}', [ChatController::class, 'fetchMessages'])->name('student.chat.fetch');
     Route::post('/chat/{teacherId}', [ChatController::class, 'sendMessage'])->name('student.chat.send');
+
+    Route::get('tests', [StudentTestController::class,'index'])->name('student.tests.index');
+    Route::get('tests/{test}', [StudentTestController::class,'show'])->name('student.tests.show');
+    Route::get('tests/{test}/download', [StudentTestController::class,'download'])->name('student.tests.download');
 });
 
 // Parent
