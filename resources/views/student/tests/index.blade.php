@@ -1,16 +1,36 @@
 @extends('student.layouts.app')
+
+@section('title','Available Tests')
+
 @section('content')
-<div class="container">
+<div class="container py-4">
     <h2>Available Tests</h2>
-    @foreach($tests as $test)
-        <div class="card mb-2">
-            <div class="card-body">
-                <h4>{{ $test->title }}</h4>
-                <p>{{ $test->description }}</p>
-                <a href="{{ route('student.tests.show', $test) }}" class="btn btn-sm btn-primary">View</a>
-                <a href="{{ route('student.tests.download', $test) }}" class="btn btn-sm btn-success">Download PDF</a>
-            </div>
-        </div>
-    @endforeach
+
+    <table class="table table-bordered table-striped" id="example">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Teacher Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($tests as $index => $test)
+            <tr>
+                <td>{{ $index + 1 }}</td>
+                <td>{{ $test->title }}</td>
+                <td>{{ $test->description }}</td>
+                <td>{{ $test->teacher->name ?? '-' }}</td>
+                <td>
+                    <a href="{{ route('student.tests.show', $test) }}" class="btn btn-sm btn-primary">View</a>
+                    <a href="{{ route('student.tests.download', $test) }}" class="btn btn-sm btn-success">Download PDF</a>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 </div>
 @endsection
+

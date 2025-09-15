@@ -1,44 +1,36 @@
 @extends('admin.layouts.app')
 
+@section('title','Available Tests')
+
 @section('content')
-<div class="container">
-    <h2>All Tests</h2>
-    <a href="{{ route('admin.tests.create') }}" class="btn btn-primary mb-3">Create Test</a>
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-    <table id="example" class="table table-bordered">
+<div class="container py-4">
+    <h2>Available Tests</h2>
+
+    <table class="table table-bordered table-striped" id="example">
         <thead>
             <tr>
                 <th>#</th>
+                <th>Teachers</th>
                 <th>Title</th>
-                <th>Class</th>
-                <th>Subject</th>
-                <th>Date</th>
+                <th>Description</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            <?php $i = 0; ?>
-        @foreach($tests as $test)
-        <?php $i++; ?>
+            @foreach($tests as $index => $test)
             <tr>
-                <td>{{ $i }}</td>
+                <td>{{ $index + 1 }}</td>
+                <td>{{ $test->teacher->name ?? '-'  }}</td>
                 <td>{{ $test->title }}</td>
-                <td>{{ $test->class->name }}</td>
-                <td>{{ $test->subject->name }}</td>
-                <td>{{ $test->date }}</td>
+                <td>{{ $test->description }}</td>
                 <td>
-                    <a href="{{ route('admin.test.questions.edit', $test) }}" class="btn btn-success btn-sm">Questions</a>
-                            <a href="{{ route('admin.tests.edit', $test->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                    <form action="{{ route('admin.tests.destroy', $test->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure?')">
-                        @csrf @method('DELETE')
-                        <button class="btn btn-sm btn-danger">Delete</button>
-                    </form>
+                    <a href="{{ route('admin.tests.show', $test) }}" class="btn btn-sm btn-primary">View</a>
+                    <a href="{{ route('admin.tests.download', $test) }}" class="btn btn-sm btn-success">Download PDF</a>
                 </td>
             </tr>
-        @endforeach
+            @endforeach
         </tbody>
     </table>
 </div>
 @endsection
+

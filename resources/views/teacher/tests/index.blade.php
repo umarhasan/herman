@@ -1,22 +1,40 @@
 @extends('teacher.layouts.app')
-@section('content')
-<div class="container">
-    <h2>Your Tests</h2>
-    <a href="{{ route('teacher.tests.create') }}" class="btn btn-primary">Create New Test</a>
-    <hr>
-    @foreach($tests as $test)
-        <div class="card mb-2">
-            <div class="card-body">
-                <h4>{{ $test->title }}</h4>
-                <p>{{ $test->description }}</p>
-                <a href="{{ route('teacher.tests.edit',$test) }}" class="btn btn-sm btn-secondary">Edit</a>
 
-                <form action="{{ route('teacher.tests.destroy', $test) }}" method="POST" style="display:inline">
-                    @csrf @method('DELETE')
-                    <button class="btn btn-sm btn-danger" onclick="return confirm('Delete test?')">Delete</button>
-                </form>
-            </div>
-        </div>
-    @endforeach
+@section('title','Your Tests')
+
+@section('content')
+<div class="container py-4">
+    <h2>Your Tests</h2>
+    <a href="{{ route('teacher.tests.create') }}" class="btn btn-primary mb-3">Create New Test</a>
+
+    <table class="table table-bordered table-striped" id="example">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Teachers</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($tests as $index => $test)
+            <tr>
+                <td>{{ $index + 1 }}</td>
+                <td>{{ $test->teacher->name  ?? '-' }}</td>
+                <td>{{ $test->title }}</td>
+                <td>{{ $test->description }}</td>
+                <td>
+                    <a href="{{ route('teacher.tests.edit',$test) }}" class="btn btn-sm btn-secondary">Edit</a>
+                    <form action="{{ route('teacher.tests.destroy', $test) }}" method="POST" style="display:inline">
+                        @csrf @method('DELETE')
+                        <button class="btn btn-sm btn-danger" onclick="return confirm('Delete test?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 </div>
 @endsection
+

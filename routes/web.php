@@ -120,11 +120,9 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     //Attendance Management Routes
     Route::get('attendance-logs', [AdminAttendenceController::class, 'index'])->name('admin.attendances.index');
     // Test Management Routes
-    Route::resource('tests', AdminTestController::class)->names('admin.tests');
-    Route::get('tests/{test}/questions/create', [AdminTestQuestionController::class, 'create'])->name('admin.tests.questions.create');
-    Route::post('tests/{test}/questions', [AdminTestQuestionController::class, 'store'])->name('admin.tests.questions.store');
-    Route::get('/edit-questions/{test}', [AdminTestQuestionController::class, 'edit'])->name('admin.test.questions.edit');
-    Route::put('/{test}/questions', [AdminTestQuestionController::class, 'update'])->name('admin.test.questions.update');
+    Route::get('tests', [AdminTestController::class,'index'])->name('admin.tests.index');
+    Route::get('tests/{test}', [AdminTestController::class,'show'])->name('admin.tests.show');
+    Route::get('tests/{test}/download', [AdminTestController::class,'download'])->name('admin.tests.download');
 
     // Resource Management Routes
     Route::resource('resources', AdminResourceController::class)->names('admin.resources');

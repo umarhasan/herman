@@ -3,66 +3,39 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\SchoolClass;
-use App\Models\Subject;
-use App\Models\Test;
 use Illuminate\Http\Request;
+use App\Models\Test;
+use App\Models\Booking;
+use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Str;
 
 class AdminTestController extends Controller
 {
     public function index()
     {
-        $tests = Test::with('class', 'subject')->latest()->get();
+        // get teacher ids where the student has bookings
+        $teacherIds = Booking::pluck('teacher_id')->unique();
+        $tests = Test::whereIn('teacher_id', $teacherIds)->with('questions.options')->get();
         return view('admin.tests.index', compact('tests'));
     }
 
-    public function create()
+    public function show(Test $test)
     {
-        $classes = SchoolClass::all();
-        $subjects = Subject::all();
-        return view('admin.tests.create', compact('classes', 'subjects'));
+        // ensure student belongs to teacher
+        $teacherIds = Booking::pluck('teacher_id')->unique();
+        abort_if(!$teacherIds->contains($test->teacher_id),403);
+        $test->load('questions.options');
+        return view('admin.tests.show', compact('test'));
     }
 
-    public function store(Request $request)
+    public function download(Test $test)
     {
-        $request->validate([
-            'title' => 'required|string',
-            'school_class_id' => 'required|exists:school_classes,id',
-            'subject_id' => 'required|exists:subjects,id',
-            'date' => 'required|date',
-        ]);
+        $teacherIds = Booking::pluck('teacher_id')->unique();
+        abort_if(!$teacherIds->contains($test->teacher_id),403);
 
-        $test = Test::create($request->all());
-
-        return redirect()->route('admin.tests.questions.create', $test->id)
-            ->with('success', 'Test created. Now add questions.');
-    }
-
-    public function edit(Test $test)
-    {
-        $classes = SchoolClass::all();
-        $subjects = Subject::all();
-        return view('admin.tests.edit', compact('test', 'classes', 'subjects'));
-    }
-
-    public function update(Request $request, Test $test)
-    {
-        $request->validate([
-            'title' => 'required|string',
-            'school_class_id' => 'required|exists:school_classes,id',
-            'subject_id' => 'required|exists:subjects,id',
-            'date' => 'required|date',
-        ]);
-
-        $test->update($request->all());
-
-        return redirect()->route('admin.tests.index')->with('success', 'Test updated successfully.');
-    }
-
-    public function destroy(Test $test)
-    {
-        $test->questions()->delete(); // delete related questions too
-        $test->delete();
-        return back()->with('success', 'Test and related questions deleted.');
+        $test->load('questions.options');
+        $pdf = Pdf::loadView('admin.tests.pdf', compact('test'));
+        return $pdf->download(Str::slug($test->title ?: 'test').'.pdf');
     }
 }
