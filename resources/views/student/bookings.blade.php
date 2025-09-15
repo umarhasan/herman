@@ -20,7 +20,6 @@
                 <tr>
                     <th>#</th>
                     <th>Teacher Name</th>
-                    <th>Teacher ID</th>
                     <th>Topic</th>
                     <th>Price</th>
                     <th>Status</th>
@@ -32,8 +31,7 @@
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $b->teacher->name ?? $b->teacher->user->name ?? '-' }}</td>
-                        <td>{{ $b->teacher->id ?? $b->teacher->user->id ?? '-' }}</td>
-                        <td>{{ $b->topic ?? '-' }}</td>
+                       <td>{{ $b->topic ?? '-' }}</td>
                         <td>${{ $b->price ?? 'N/A' }}</td>
                         <td><span class="badge bg-info text-dark">{{ ucfirst($b->status) }}</span></td>
                         <td>
