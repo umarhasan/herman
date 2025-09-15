@@ -176,7 +176,10 @@ Route::middleware(['auth', 'role:Teacher'])->prefix('teacher')->group(function (
     Route::post('/bookings/{booking}/upload-recording', [TeacherBookingController::class,'uploadRecording'])->name('teacher.bookings.uploadRecording');
     Route::post('/recordings/{recording}/remove', [TeacherBookingController::class,'removeRecording'])->name('teacher.recordings.remove');
 
-    Route::resource('tefillin_inspections', TeacherCtrl::class)->names('teacher.tefillin_inspections');
+    // Teacher Record Book
+    Route::get('/record/books', [TeacherCtrl::class, 'recordBook'])->name('teacher.recordbooks');
+    Route::get('record-book/{user}', [TeacherCtrl::class,'show'])->name('teacher.recordbook.show');
+    Route::get('record-book/{user}/pdf', [TeacherCtrl::class,'pdf'])->name('teacher.recordbook.pdf');
     // Teacher chat endpoints
     Route::get('/chat', [ChatController::class, 'teacherIndex'])->name('teacher.chat.index');
     Route::get('/chat/{studentId}', [ChatController::class, 'fetchMessages'])->name('teacher.chat.fetch');
@@ -200,8 +203,10 @@ Route::middleware(['auth', 'role:Student'])->prefix('student')->group(function (
     Route::get('/bookings', [BookingController::class,'studentBookings'])->name('student.bookings');
     Route::get('/bookings/{booking}', [BookingController::class,'show'])->name('student.bookings.show');
     Route::post('/bookings/{booking}/upload-proof', [BookingController::class,'uploadProof'])->name('student.bookings.uploadProof');
-
-    Route::resource('tefillin_inspections', StudentCtrl::class)->names('student.tefillin_inspections');
+    // Student Record Book
+    Route::get('/record/books', [StudentCtrl::class, 'recordBook'])->name('student.recordbooks');
+    Route::get('record-book/{user}', [StudentCtrl::class,'show'])->name('student.recordbook.show');
+    Route::get('record-book/{user}/pdf', [StudentCtrl::class,'pdf'])->name('student.recordbook.pdf');
 
     Route::get('/chat/{teacherId}', [ChatController::class, 'fetchMessages'])->name('student.chat.fetch');
     Route::post('/chat/{teacherId}', [ChatController::class, 'sendMessage'])->name('student.chat.send');
@@ -219,8 +224,10 @@ Route::middleware(['auth', 'role:Parent'])->prefix('parent')->group(function () 
     Route::post('/convert-g2h', [ParentHebrewCalendarController::class, 'gregorianToHebrew'])->name('parent.converter.g2h');
     Route::post('/convert-h2g', [ParentHebrewCalendarController::class, 'hebrewToGregorian'])->name('parent.converter.h2g');
     Route::get('converter/month-list', [ParentHebrewCalendarController::class, 'calendarListView'])->name('parent.converter.monthlist');
-
-    Route::resource('tefillin_inspections', ParentCtrl::class)->names('parent.tefillin_inspections');
+    // Parent Record Book
+    Route::get('/record/books', [ParentCtrl::class, 'recordBook'])->name('parent.recordbooks');
+    Route::get('record-book/{user}', [ParentCtrl::class,'show'])->name('parent.recordbook.show');
+    Route::get('record-book/{user}/pdf', [ParentCtrl::class,'pdf'])->name('parent.recordbook.pdf');
 });
 
 // User
@@ -235,8 +242,10 @@ Route::middleware(['auth', 'role:User'])->prefix('user')->group(function () {
     Route::post('/convert-g2h', [UserHebrewCalendarController::class, 'gregorianToHebrew'])->name('user.converter.g2h');
     Route::post('/convert-h2g', [UserHebrewCalendarController::class, 'hebrewToGregorian'])->name('user.converter.h2g');
     Route::get('converter/month-list', [UserHebrewCalendarController::class, 'calendarListView'])->name('user.converter.monthlist');
-
-    Route::resource('tefillin_inspections', UserCtrl::class)->names('user.tefillin_inspections');
+    // User Record Book
+    Route::get('/record/books', [UserCtrl::class, 'recordBook'])->name('user.recordbooks');
+    Route::get('record-book/{user}', [UserCtrl::class,'show'])->name('user.recordbook.show');
+    Route::get('record-book/{user}/pdf', [UserCtrl::class,'pdf'])->name('user.recordbook.pdf');
 });
 
 require __DIR__ . '/auth.php';

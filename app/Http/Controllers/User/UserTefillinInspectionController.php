@@ -3,51 +3,50 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreTefillinInspectionRequest;
-use App\Http\Requests\UpdateTefillinInspectionRequest;
-use App\Models\TefillinInspection;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class UserTefillinInspectionController extends Controller
 {
-    public function index()
-    {
-        $inspections = TefillinInspection::where('user_id', Auth::id())
-            ->orderBy('side')->orderBy('part_name')->paginate(20);
-
-        return view('user.tefillin_inspections.index', compact('inspections'));
+    public function recordBook(){
+        $users = User::where('id', Auth::id())->get();
+        return view('user.recordbook.index', compact('users'));
     }
 
-    public function create()
-    {
-        return view('user.tefillin_inspections.create', [
-            'parts' => ['A','B','C','D'],
-            'sides' => ['left','right','head'],
-        ]);
+    public function show(User $user){
+        // ab sirf tefillin aur mezuza
+        $tefillin = $user->tefillinRecords()
+                         ->orderBy('parshe_number')
+                         ->get();
+
+        $mezuza = $user->mezuzaRecords()
+                       ->orderBy('location')
+                       ->get();
+        // **Batim ko Tefillin me merge karne ke liye fetch karo**
+        $batim = $user->batimRecords()
+                  ->orderBy('inspected_on','desc')
+                  ->get()
+                  ->unique('type');
+
+        return view('user.recordbook.show', compact('user','tefillin','mezuza','batim'));
     }
 
-    public function store(StoreTefillinInspectionRequest $request)
-    {
-        $data = $request->validated();
-        $data['user_id'] = Auth::id();
-        TefillinInspection::create($data);
-        return to_route('user.tefillin_inspections.index')->with('success','Submitted');
-    }
+    public function pdf(User $user){
+        $tefillin = $user->tefillinRecords()
+                         ->orderBy('parshe_number')
+                         ->get();
 
-    public function edit(TefillinInspection $tefillin_inspection)
-    {
-        abort_unless($tefillin_inspection->user_id === Auth::id(), 403);
-        return view('user.tefillin_inspections.edit', [
-            'inspection' => $tefillin_inspection,
-            'parts' => ['A','B','C','D'],
-            'sides' => ['left','right','head'],
-        ]);
-    }
+        $mezuza = $user->mezuzaRecords()
+                       ->orderBy('location')
+                       ->get();
+        $batim = $user->batimRecords()
+        ->orderBy('inspected_on','desc')
+        ->get()
+        ->unique('type');
+        $pdf = Pdf::loadView('user.recordbook.pdf', compact('user','tefillin','mezuza','batim'))
+                  ->setPaper('a4','portrait');
 
-    public function update(UpdateTefillinInspectionRequest $request, TefillinInspection $tefillin_inspection)
-    {
-        abort_unless($tefillin_inspection->user_id === Auth::id(), 403);
-        $tefillin_inspection->update($request->validated());
-        return to_route('user.tefillin_inspections.index')->with('success','Updated');
+        return $pdf->download('record-book-'.$user->id.'.pdf');
     }
 }
